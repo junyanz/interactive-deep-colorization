@@ -12,7 +12,7 @@ In ACM Transactions on Graphics (SIGGRAPH 2017).
 
 We first describe the system <b>(0) Prerequisities</b> and steps for <b>(1) Getting started</b>. We then describe the interactive colorization demo <b>(2) Interactive Colorization (Local Hints Network)</b>. There are two demos: (a) a "barebones" version in iPython notebook and (b) the full GUI we used in our paper. We then provide an example of the <b>(3) Global Hints Network</b>.
 
-<!-- <img src='https://richzhang.github.io/ideepcolor/index_files/imagenet_showcase_small.jpg' width=800> -->
+<img src='https://richzhang.github.io/ideepcolor/index_files/imagenet_showcase_small.jpg' width=800>
 
 ### (0) Prerequisites
 - Linux or OSX
