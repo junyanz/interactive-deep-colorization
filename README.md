@@ -92,5 +92,7 @@ sudo pip install qdarkstyle
 ```
 
 ## Cat Paper Collection
-If you love cats, and love reading cool graphics, vision, and learning papers, please check out the Cat Paper Collection:  
+The first first author objects to the following inclusion, due to his allergy.
+
+However, if you love cats, and love reading cool graphics, vision, and learning papers, please check out the Cat Paper Collection:  
 [[Github]](https://github.com/junyanz/CatPapers) [[Webpage]](http://people.eecs.berkeley.edu/~junyanz/cat/cat_papers.html)
