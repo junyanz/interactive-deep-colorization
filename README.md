@@ -1,7 +1,7 @@
 
 # Interactive Deep Colorization
 
-### [[Project Page]](https://richzhang.github.io/ideepcolor/) [[Paper]]() [[Demo Video]](https://youtu.be/eL5ilZgM89Q) [[Talk]](https://www.youtube.com/watch?v=FTzcFsz2xqw&feature=youtu.be&t=992)
+### [[Project Page]](https://richzhang.github.io/ideepcolor/) [[Paper]]() [[Demo Video]](https://youtu.be/eL5ilZgM89Q) [[Seminar Talk]](https://www.youtube.com/watch?v=FTzcFsz2xqw&feature=youtu.be&t=992)
 <img src='imgs/demo.gif' width=600>
 
 <!-- This repository contains a Python implementation for user-guided image colorization technique described in the following paper: -->
