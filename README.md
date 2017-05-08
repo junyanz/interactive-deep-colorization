@@ -90,3 +90,7 @@ sudo apt-get install python-qt4
 ```
 sudo pip install qdarkstyle
 ```
+
+## Cat Paper Collection
+If you love cats, and love reading cool graphics, vision, and learning papers, please check out the Cat Paper Collection:  
+[[Github]](https://github.com/junyanz/CatPapers) [[Webpage]](http://people.eecs.berkeley.edu/~junyanz/cat/cat_papers.html)
