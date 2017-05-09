@@ -50,7 +50,7 @@ We provide a "barebones" demo in iPython notebook, which does not require QT. We
 ```
 --win_size    [512] GUI window size
 --gpu         [0] GPU number
---image_file  ['./tesT_imgs/mortar_pester.jpg'] path to the image file
+--image_file  ['./test_imgs/mortar_pestle.jpg'] path to the image file
 ```
 
 - User interactions
@@ -74,7 +74,7 @@ We include an example usage of our Global Hints Network, applied to global histo
 
 - Add `./caffe_files` to your `PYTHONPATH`
 
-- Run `ipython notebook`. Click on [`./DemoGlobalHistogramTransfer.ipynb`](./DemoGlobalHistogramTransfer.ipynb)`
+- Run `ipython notebook`. Click on [`./DemoGlobalHistogramTransfer.ipynb`](./DemoGlobalHistogramTransfer.ipynb)
 
 ### (A) Requirements
 - Caffe (See Caffe installation [document](http://caffe.berkeleyvision.org/installation.html))
