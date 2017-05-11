@@ -28,7 +28,7 @@ cd ideepcolor
 
 - Download the reference model
 ```
-bash ./models/fetch_reference_model.sh
+bash ./models/fetch_models.sh
 ```
 
 - Install [Caffe](http://caffe.berkeleyvision.org/installation.html) and Python libraries ([OpenCV](http://opencv.org/))
