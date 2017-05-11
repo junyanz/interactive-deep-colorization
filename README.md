@@ -46,7 +46,7 @@ We provide a "barebones" demo in iPython notebook, which does not require QT. We
 
 - Install [Qt4](https://wiki.python.org/moin/PyQt4) and [QDarkStyle](https://github.com/ColinDuquesnoy/QDarkStyleSheet). (See [Requirements](## (A) Requirements))
 
-- Run the UI: `bash python ideepcolor.py --gpu [GPU_ID]`. Arguments are described below:
+- Run the UI: `python ideepcolor.py --gpu [GPU_ID]`. Arguments are described below:
 ```
 --win_size    [512] GUI window size
 --gpu         [0] GPU number
