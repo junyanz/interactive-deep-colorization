@@ -90,26 +90,25 @@ layer { # 0-center data_l channel
 #   include { phase: TRAIN }
 #   resize_param { height: 44 width: 44 }
 # }
-layer { # subsample ab
-  name: "data_ab_rs"
-  type: "Resize"
-  bottom: "data_ab"
-  top: "data_ab_rs"
-  include { phase: TEST }
-  resize_param { height: 64 width: 64 }
-}
-# layer {
+# layer { # subsample ab
 #   name: "data_ab_rs"
-#   type: "Pooling"
+#   type: "Resize"
 #   bottom: "data_ab"
 #   top: "data_ab_rs"
-#   pooling_param {
-#     kernel_size: 4
-#     stride: 4
-#     pool: AVE
-#   }
+#   include { phase: TEST }
+#   resize_param { height: 64 width: 64 }
 # }
-
+layer {
+  name: "data_ab_rs"
+  type: "Pooling"
+  bottom: "data_ab"
+  top: "data_ab_rs"
+  pooling_param {
+    kernel_size: 4
+    stride: 4
+    pool: AVE
+  }
+}
 # layer { # subsample ab
 #   name: "data_ab_rs"
 #   type: "Convolution"
