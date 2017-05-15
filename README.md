@@ -28,7 +28,7 @@ cd ideepcolor
 
 - Download the reference model
 ```
-bash ./models/fetch_reference_model.sh
+bash ./models/fetch_models.sh
 ```
 
 - Install [Caffe](http://caffe.berkeleyvision.org/installation.html) and Python libraries ([OpenCV](http://opencv.org/))
@@ -46,11 +46,11 @@ We provide a "barebones" demo in iPython notebook, which does not require QT. We
 
 - Install [Qt4](https://wiki.python.org/moin/PyQt4) and [QDarkStyle](https://github.com/ColinDuquesnoy/QDarkStyleSheet). (See [Requirements](## (A) Requirements))
 
-- Run the UI: `bash python ideepcolor.py --gpu [GPU_ID]`. Arguments are described below:
+- Run the UI: `python ideepcolor.py --gpu [GPU_ID]`. Arguments are described below:
 ```
 --win_size    [512] GUI window size
 --gpu         [0] GPU number
---image_file  ['./tesT_imgs/mortar_pester.jpg'] path to the image file
+--image_file  ['./test_imgs/mortar_pestle.jpg'] path to the image file
 ```
 
 - User interactions
@@ -74,9 +74,9 @@ We include an example usage of our Global Hints Network, applied to global histo
 
 - Add `./caffe_files` to your `PYTHONPATH`
 
-- Run `ipython notebook`. Click on [`./DemoGlobalHistogramTransfer.ipynb`](./DemoGlobalHistogramTransfer.ipynb)`
+- Run `ipython notebook`. Click on [`./DemoGlobalHistogramTransfer.ipynb`](./DemoGlobalHistogramTransfer.ipynb)
 
-## (A) Requirements
+### (A) Requirements
 - Caffe (See Caffe installation [document](http://caffe.berkeleyvision.org/installation.html))
 - OpenCV
 ```
@@ -91,6 +91,5 @@ sudo apt-get install python-qt4
 sudo pip install qdarkstyle
 ```
 
-## (B) Cat Paper Collection
-One of the authors objects to the inclusion of this list, due to an allergy. However, if you love cats, and love reading cool graphics, vision, and learning papers, please check out the Cat Paper Collection:  
-[[Github]](https://github.com/junyanz/CatPapers) [[Webpage]](http://people.eecs.berkeley.edu/~junyanz/cat/cat_papers.html)
+### (B) Cat Paper Collection
+One of the authors objects to the inclusion of this list, due to an allergy. Another author objects on the basis that cats are silly creatures and this is a serious, scientific paper. However, if you love cats, and love reading cool graphics, vision, and learning papers, please check out the Cat Paper Collection: [[Github]](https://github.com/junyanz/CatPapers) [[Webpage]](http://people.eecs.berkeley.edu/~junyanz/cat/cat_papers.html)
