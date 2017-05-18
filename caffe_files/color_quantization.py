@@ -11,14 +11,11 @@ import scipy as sp
 import caffe
 import matplotlib.pyplot as plt
 import time
-import rz_fcns as rz
-# import open_caffe_network as ocn
-# import ilsvrc12_loader as ill
+import rz_fcns_nohdf5 as rz
 from skimage import color
 from mpl_toolkits.mplot3d import Axes3D as ax3
 from IPython.core.debugger import Pdb as pdb
 import sklearn.neighbors as nn
-# import ilsvrc12_loader as ill
 import scipy
 import caffe
 
@@ -184,7 +181,7 @@ def data_l_abs_to_imgs(data_ab,data_l,img_xform):
 
 	return (lab,rgb)
 
-def load_grid_pts(grid_inc=10,GRIDDIR='/home/eecs/rich.zhang/src/projects/cross_domain/ab_grid_10'):
+def load_grid_pts(grid_inc=10,GRIDDIR='./data/color_bins'):
 	# load ab points in hull
 	# GRIDDIR = 
 	grid_pts = {}
@@ -318,8 +315,7 @@ def int2kstr(num):
 
 class GridEncode():
 	def __init__(self,NN,sigma,grid_inc=10):
-		# self.GRIDDIR = '/home/eecs/rich.zhang/data_rzhang/models/caffe/cross_domain/l_to_ab/2015_02_13_classification_nn_rbf_reggrid/'
-		self.GRIDDIR = '/home/eecs/rich.zhang/src/projects/cross_domain/save/ab_grid_10'
+		self.GRIDDIR = './data/color_bins'
 		self.GRID_FULL_PATH = os.path.join(self.GRIDDIR,'pts_grid.npy')
 		self.GRID_MASK_PATH = os.path.join(self.GRIDDIR,'in_hull.npy')
 		self.GRID_HULL_PATH = os.path.join(self.GRIDDIR,'pts_in_hull.npy')

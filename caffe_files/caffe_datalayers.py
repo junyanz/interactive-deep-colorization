@@ -15,7 +15,7 @@ import time
 # import imgnet_xform
 import itertools
 import caffe
-import rz_fcns as rz
+import rz_fcns_nohdf5 as rz
 import h5py
 import color_quantization as cq
 from skimage.transform import pyramid_gaussian as pg
