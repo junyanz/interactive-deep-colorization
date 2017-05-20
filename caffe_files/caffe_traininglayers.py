@@ -810,13 +810,13 @@ class NNEnc2Layer(caffe.Layer):
         self.NN = 9 # this is hard-coded into the forward
         # self.NN = 1 # this is hard-coded into the forward
         self.sigma = 5.
-        self.ENC_DIR = '/home/eecs/rich.zhang/src/projects/cross_domain/save/ab_grid_10'
+        self.ENC_DIR = './data/color_bins'
         # self.nnenc = NNEncode(self.NN,self.sigma,km_filepath=os.path.join(self.ENC_DIR,'pts_in_hull.npy'))
 
         self.pts_in_hull = np.load(os.path.join(self.ENC_DIR,'pts_in_hull.npy'))
         self.prior_probs = np.load(os.path.join(self.ENC_DIR,'prior_probs.npy'))
 
-        self.ENC_DIR = '/home/eecs/rich.zhang/src/projects/cross_domain/save/ab_grid_10'
+        self.ENC_DIR = './data/color_bins'
         self.pts_in_hull = np.load(os.path.join(self.ENC_DIR,'pts_in_hull.npy'))
         self.pts_grid = np.load(os.path.join(self.ENC_DIR,'pts_grid.npy'))
         self.prior_probs = np.load(os.path.join(self.ENC_DIR,'prior_probs.npy'))
@@ -925,13 +925,13 @@ class NNEnc1HotLayer(caffe.Layer):
             raise Exception("Layer should have inputs")
         self.NN = 1 # this is hard-coded into the forward
         self.sigma = 5.
-        self.ENC_DIR = '/home/eecs/rich.zhang/src/projects/cross_domain/save/ab_grid_10'
+        self.ENC_DIR = './data/color_bins'
         # self.nnenc = NNEncode(self.NN,self.sigma,km_filepath=os.path.join(self.ENC_DIR,'pts_in_hull.npy'))
 
         self.pts_in_hull = np.load(os.path.join(self.ENC_DIR,'pts_in_hull.npy'))
         self.prior_probs = np.load(os.path.join(self.ENC_DIR,'prior_probs.npy'))
 
-        self.ENC_DIR = '/home/eecs/rich.zhang/src/projects/cross_domain/save/ab_grid_10'
+        self.ENC_DIR = './data/color_bins'
         self.pts_in_hull = np.load(os.path.join(self.ENC_DIR,'pts_in_hull.npy'))
         self.pts_grid = np.load(os.path.join(self.ENC_DIR,'pts_grid.npy'))
         self.prior_probs = np.load(os.path.join(self.ENC_DIR,'prior_probs.npy'))
@@ -1131,7 +1131,7 @@ class NNEncLayer(caffe.Layer):
             raise Exception("Layer should have inputs")
         self.NN = 10.
         self.sigma = 5.
-        self.ENC_DIR = '/home/eecs/rich.zhang/src/projects/cross_domain/save/ab_grid_10'
+        self.ENC_DIR = './data/color_bins'
         self.nnenc = NNEncode(self.NN,self.sigma,km_filepath=os.path.join(self.ENC_DIR,'pts_in_hull.npy'))
 
         self.HARD_FLAG = False
@@ -1177,7 +1177,7 @@ class PriorBoostLayer(caffe.Layer):
         if len(bottom) == 0:
             raise Exception("Layer should have inputs")
 
-        self.ENC_DIR = '/home/eecs/rich.zhang/src/projects/cross_domain/save/ab_grid_10'
+        self.ENC_DIR = './data/color_bins'
         self.gamma = .5
         self.alpha = 1.
         self.pc = PriorFactor(self.alpha,gamma=self.gamma,priorFile=os.path.join(self.ENC_DIR,'prior_probs.npy'))

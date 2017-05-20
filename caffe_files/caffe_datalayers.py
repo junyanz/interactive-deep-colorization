@@ -39,7 +39,7 @@ class NNEncLayer(caffe.Layer):
         # self.NN = 10.
         self.NN = 1.
         self.sigma = 5.
-        self.ENC_DIR = '/home/eecs/rich.zhang/src/projects/cross_domain/save/ab_grid_10'
+        self.ENC_DIR = './data/color_bins'
         self.nnenc = cq.NNEncode(self.NN,self.sigma,km_filepath=os.path.join(self.ENC_DIR,'pts_in_hull.npy'))
 
         self.N = bottom[0].data.shape[0]
@@ -71,7 +71,7 @@ class PriorBoostLayer(caffe.Layer):
         if len(bottom) == 0:
             raise Exception("Layer should have inputs")
 
-        self.ENC_DIR = '/home/eecs/rich.zhang/src/projects/cross_domain/save/ab_grid_10'
+        self.ENC_DIR = './data/color_bins'
         self.gamma = .5
         self.alpha = 1.
         self.pc = PriorFactor(self.alpha,gamma=self.gamma,priorFile=os.path.join(self.ENC_DIR,'prior_probs.npy'))
@@ -261,7 +261,7 @@ class ILSVRCTrnLabDataLayer(caffe.Layer):
         self.YSS = self.Y/self.SS
         self.sigma = 5 # sigma
 
-        self.ENC_DIR = '/home/eecs/rich.zhang/src/projects/cross_domain/save/ab_grid_10'
+        self.ENC_DIR = './data/color_bins'
         self.ildl = ILSVRCLabDataLoader(B=self.B,N=self.N,sameMode=self.TO_PROD_SAME, fileprefix='trn_data_lab_randord_224',verbose=self.verbose,filedir='/data/efros/rzhang/datasets/ILSVRC2012_processed')
         self.data_empty = True
 
@@ -337,7 +337,7 @@ class ILSVRCTrnLabQuantNNPriorBoostDataLayer(caffe.Layer):
         # self.alpha = 0. # prior probability correction factor
         self.alpha = 1. # prior probability correction factor
 
-        self.ENC_DIR = '/home/eecs/rich.zhang/src/projects/cross_domain/save/ab_grid_10'
+        self.ENC_DIR = './data/color_bins'
         self.ildl = ILSVRCLabDataLoader(B=self.B,N=self.N,sameMode=self.TO_PROD_SAME, fileprefix='trn_data_lab_randord_224',verbose=self.verbose,filedir='/data/efros/rzhang/datasets/ILSVRC2012_processed')
         self.nnenc = cq.NNEncode(self.NN,self.sigma,km_filepath=os.path.join(self.ENC_DIR,'pts_in_hull.npy'))
         self.pc = PriorFactor(self.alpha,gamma=self.gamma,priorFile=os.path.join(self.ENC_DIR,'prior_probs.npy'))
@@ -524,7 +524,7 @@ class SubsampleIndices():
         return bottom_diff
 
 class PriorFactor():
-    def __init__(self,alpha,gamma=0,verbose=True,priorFile='/home/eecs/rich.zhang/src/projects/cross_domain/save/ab_grid_10/prior_probs.npy',genc=-1):
+    def __init__(self,alpha,gamma=0,verbose=True,priorFile='',genc=-1):
         # INPUTS
         #   alpha           integer     prior correction factor, 0 to ignore prior, 1 to divide by prior, alpha to divide by prior^alpha power
         #   gamma           integer     percentage to mix in prior probability
@@ -780,8 +780,8 @@ class ILSVRCTrnLabGaussianDataLayer(caffe.Layer):
         self.Ldelt = self.Lmax-self.Lmin
         self.ildl = ILSVRCLabDataLoader(B=self.B,N=self.N,sameMode=self.TO_PROD_SAME, fileprefix='trn_data_lab_randord_224',verbose=self.verbose,filedir='/data/efros/rzhang/datasets/ILSVRC2012_processed')
         self.gp = cq.GaussianPyramid(Lmax=self.Lmax,Lmin=self.Lmin)
-        self.nnenc = cq.NNEncode(self.NN,self.sigma,km_filepath='/home/eecs/rich.zhang/src/projects/cross_domain/save/ab_grid_10/pts_in_hull.npy')
-        self.pc = PriorFactor(self.alpha,priorFile='/home/eecs/rich.zhang/src/projects/cross_domain/save/prior_prob_10/prior_probs.npy')
+        self.nnenc = cq.NNEncode(self.NN,self.sigma,km_filepath='./data/color_bins/pts_in_hull.npy')
+        self.pc = PriorFactor(self.alpha,priorFile='./data/color_bins/prior_probs.npy')
 
     def reshape(self, bottom, top):
         top[0].reshape(self.N,1,self.X,self.Y)
@@ -837,7 +837,7 @@ class ILSVRCTrnLabQuantNNDataLayer2(caffe.Layer):
         self.sigma = 5 # sigma
         self.ildl = ILSVRCLabDataLoader(B=self.B,N=self.N,sameMode=self.TO_PROD_SAME, fileprefix='trn_data_lab_randord_224',verbose=self.verbose,filedir='/data/efros/rzhang/datasets/ILSVRC2012_processed')
         # self.ilpl = ILSVRCLabPaletteLoader(B=self.B,N=self.N,sameMode=self.TO_PROD_SAME, fileprefix='trn_data_randord_palette',verbose=self.verbose,filedir='/data/efros/rzhang/datasets/ILSVRC2012_processed')
-        self.nnenc = cq.NNEncode(self.NN,self.sigma,km_filepath='/home/eecs/rich.zhang/data_rzhang/models/caffe/cross_domain/l_to_ab/2015_02_13_classification_nn_rbf_reggrid/pts_in_hull.npy')
+        self.nnenc = cq.NNEncode(self.NN,self.sigma,km_filepath='./data/color_bins/pts_in_hull.npy')
 
     def reshape(self, bottom, top):
         top[0].reshape(self.N,1,self.X,self.Y)
