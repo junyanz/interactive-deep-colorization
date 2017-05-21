@@ -18,6 +18,7 @@ def parse_args():
     parser.add_argument('--win_size', dest='win_size', help='the size of the main window', type=int, default=512)
     parser.add_argument('--image_file', dest='image_file', help='input image', type=str, default='test_imgs/mortar_pestle.jpg')
     parser.add_argument('--gpu', dest='gpu', help='gpu id', type=int, default=0)
+    parser.add_argument('--cpu_mode', dest='cpu_mode', help='do not use gpu',action='store_true')
 
     # Main colorization model
     parser.add_argument('--color_prototxt',dest='color_prototxt',help='colorization caffe prototxt', type=str, \
@@ -45,6 +46,9 @@ if __name__ == '__main__':
 
     for arg in vars(args):
         print('[%s] =' % arg, getattr(args, arg))
+
+    if(args.cpu_mode):
+        args.gpu = -1
 
     args.win_size = int(args.win_size / 4.0) * 4  # make sure the width of the image can be divided by 4
 

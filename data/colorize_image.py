@@ -239,8 +239,11 @@ class ColorizeImageCaffe(ColorizeImageBase):
 	# ***** Net preparation *****
 	def prep_net(self,gpu_id,prototxt_path='',caffemodel_path=''):
 		print('gpu_id = %d, net_path = %s, model_path = %s' % (gpu_id, prototxt_path, caffemodel_path))
-		caffe.set_device(gpu_id)
-		caffe.set_mode_gpu()
+		if(gpu_id==-1):
+			caffe.set_mode_cpu()
+		else:
+			caffe.set_device(gpu_id)
+			caffe.set_mode_gpu()
 		self.gpu_id = gpu_id
 		self.net = caffe.Net(prototxt_path, caffemodel_path, caffe.TEST)
 		self.net_set = True
