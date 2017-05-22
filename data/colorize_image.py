@@ -16,7 +16,7 @@ import sys
 from scipy.ndimage.interpolation import zoom
 
 def create_temp_directory(path_template,N=1e8):
-	print path_template
+	print(path_template)
 	cur_path = path_template%np.random.randint(0,N)
 	while(os.path.exists(cur_path)):
 		cur_path = path_template%np.random.randint(0,N)

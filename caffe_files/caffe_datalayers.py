@@ -229,7 +229,7 @@ class TemperatureLayer(caffe.Layer):
     def forward(self, bottom, top):
         top[0].data[...] = self.temp
         if(self.verbose):
-            print self.temp
+            print(self.temp)
 
     def backward(self, top, propagate_down, bottom):
         for i in range(len(bottom)):
@@ -568,9 +568,9 @@ class PriorFactor():
         self.softmax_correction_full_grid = genc.enc_full_grid_mtx_nd(self.softmax_correction,axis=0,returnGrid=True)
 
     def print_correction_stats(self):
-        print 'Prior factor correction:'
-        print '  (alpha,gamma) = (%.2f, %.2f)'%(self.alpha,self.gamma)
-        print '  (min,max,mean,med,exp) = (%.2f, %.2f, %.2f, %.2f, %.2f)'%(np.min(self.prior_factor),np.max(self.prior_factor),np.mean(self.prior_factor),np.median(self.prior_factor),np.sum(self.prior_factor*self.prior_probs))
+        print('Prior factor correction:')
+        print('  (alpha,gamma) = (%.2f, %.2f)'%(self.alpha,self.gamma))
+        print('  (min,max,mean,med,exp) = (%.2f, %.2f, %.2f, %.2f, %.2f)'%(np.min(self.prior_factor),np.max(self.prior_factor),np.mean(self.prior_factor),np.median(self.prior_factor),np.sum(self.prior_factor*self.prior_probs)))
 
     def forward(self,data_ab_quant,axis=1):
         # data_ab_quant = net.blobs['data_ab_quant_map_233'].data[...]
@@ -911,14 +911,14 @@ class ILSVRCLabPaletteLoader():
         self.TO_PROD_SAME = sameMode # keep spitting out the first minibatch
 
         if(self.verbose):
-            print 'Loading ILSVRC training palette data'
+            print('Loading ILSVRC training palette data')
         # self.N = 96 # batch size
         self.N = N # batch size
         self.B = B # total number of files
 
         self.t = rz.Timer()
         if(self.verbose):
-            print '  Subdatabases found: %i'%self.B
+            print('  Subdatabases found: %i'%self.B)
         self.hdf5filepaths = np.zeros(self.B,dtype='object')
         self.hdf5s = np.zeros(self.B,dtype='object')
         self.data = np.zeros(self.B,dtype='object')
@@ -961,7 +961,7 @@ class ILSVRCLabPaletteLoader():
 
         if(self.verbose):
             for cc in range(len(cnt_inds)):
-                print '%s: %i: inds %i-%i from db %i'%(self.t.tocStr(),cc,cnt_inds[cc][0],cnt_inds[cc][-1],db_inds[cc])
+                print('%s: %i: inds %i-%i from db %i'%(self.t.tocStr(),cc,cnt_inds[cc][0],cnt_inds[cc][-1],db_inds[cc]))
 
         # fill in data from the databases
         data_palette = np.zeros((self.N,4,self.C),dtype='float32')
@@ -998,7 +998,7 @@ class ILSVRCLabPaletteLabelLoader():
             self.cur_cnt = override_cnt
 
         if(self.verbose):
-            print '%s: db-%i, cnt-%i'%(self.t.tocStr(),self.cur_db,self.cur_cnt)
+            print('%s: db-%i, cnt-%i'%(self.t.tocStr(),self.cur_db,self.cur_cnt))
 
         self.cur_cnt = self.S*override_db + override_cnt
         # print self.trn_palette_k
@@ -1021,14 +1021,14 @@ class ILSVRCLabDataLoader():
         self.TO_PROD_SAME = sameMode # keep spitting out the first minibatch
 
         if(self.verbose):
-            print 'Loading ILSVRC training LAB data'
+            print('Loading ILSVRC training LAB data')
         # self.N = 96 # batch size
         self.N = N # batch size
         self.B = B # total number of files
 
         self.t = rz.Timer()
         if(self.verbose):
-            print '  Subdatabases found: %i'%self.B
+            print('  Subdatabases found: %i'%self.B)
         self.hdf5filepaths = np.zeros(self.B,dtype='object')
         self.hdf5s = np.zeros(self.B,dtype='object')
         self.data = np.zeros(self.B,dtype='object')
@@ -1090,7 +1090,7 @@ class ILSVRCLabDataLoader():
 
         if(self.verbose):
             for cc in range(len(cnt_inds)):
-                print '%s: %i: inds %i-%i from db %i'%(self.t.tocStr(),cc,cnt_inds[cc][0],cnt_inds[cc][-1],db_inds[cc])
+                print('%s: %i: inds %i-%i from db %i'%(self.t.tocStr(),cc,cnt_inds[cc][0],cnt_inds[cc][-1],db_inds[cc]))
 
         # fill in data from the databases
         data_l = np.zeros((self.N,1,X,Y),dtype='float32')
@@ -1173,7 +1173,7 @@ class ILSVRCTrnLabQuantInd20SS4DataLayer(caffe.Layer):
 
         self.verbose = True
         if(self.verbose):
-            print 'Loading ILSVRC training LAB data'
+            print('Loading ILSVRC training LAB data')
         self.N = 60 # batch size
         self.B = 129 # total number of files
         # self.N = 64 # batch size
@@ -1195,7 +1195,7 @@ class ILSVRCTrnLabQuantInd20SS4DataLayer(caffe.Layer):
     def load_overhead(self):
         self.hdf5filedir = '/data/efros/rzhang/datasets/ILSVRC2012_processed'
         if(self.verbose):
-            print '  Subdatabases found: %i'%self.B
+            print('  Subdatabases found: %i'%self.B)
         self.hdf5filepaths = np.zeros(self.B,dtype='object')
         self.hdf5s = np.zeros(self.B,dtype='object')
         self.data = np.zeros(self.B,dtype='object')
@@ -1266,7 +1266,7 @@ class ILSVRCTrnLabQuantInd20SS4DataLayer(caffe.Layer):
         if(self.verbose):
         # if(1):
             for cc in range(len(cnt_inds)):
-                print '%s: %i: inds %i-%i from db %i'%(self.t.tocStr(),cc,cnt_inds[cc][0],cnt_inds[cc][-1],db_inds[cc])
+                print('%s: %i: inds %i-%i from db %i'%(self.t.tocStr(),cc,cnt_inds[cc][0],cnt_inds[cc][-1],db_inds[cc]))
 
         # # fill in data from the databases
         cnt = 0
@@ -1546,7 +1546,7 @@ class ILSVRCTrnLabQuantIndDataLayer(caffe.Layer):
 
         self.verbose = True
         if(self.verbose):
-            print 'Loading ILSVRC training LAB data'
+            print('Loading ILSVRC training LAB data')
         # self.N = 96 # batch size
         self.N = 60 # batch size
         # self.B = 1 # total number of files
@@ -1562,7 +1562,7 @@ class ILSVRCTrnLabQuantIndDataLayer(caffe.Layer):
     def load_overhead(self):
         self.hdf5filedir = '/data/efros/rzhang/datasets/ILSVRC2012_processed'
         if(self.verbose):
-            print '  Subdatabases found: %i'%self.B
+            print('  Subdatabases found: %i'%self.B)
         self.hdf5filepaths = np.zeros(self.B,dtype='object')
         self.hdf5s = np.zeros(self.B,dtype='object')
         self.data = np.zeros(self.B,dtype='object')
@@ -1622,7 +1622,7 @@ class ILSVRCTrnLabQuantIndDataLayer(caffe.Layer):
 
         if(self.verbose):
             for cc in range(len(cnt_inds)):
-                print '%s: %i: inds %i-%i from db %i'%(self.t.tocStr(),cc,cnt_inds[cc][0],cnt_inds[cc][-1],db_inds[cc])
+                print('%s: %i: inds %i-%i from db %i'%(self.t.tocStr(),cc,cnt_inds[cc][0],cnt_inds[cc][-1],db_inds[cc]))
 
         # fill in data from the databases
         data_ab = np.zeros((self.N,2,self.X/self.SS,self.Y/self.SS),dtype='float32')
@@ -1685,7 +1685,7 @@ class ILSVRCTrnLabQuantMapDataLayer(caffe.Layer):
 
         self.verbose = True
         if(self.verbose):
-            print 'Loading ILSVRC training LAB data'
+            print('Loading ILSVRC training LAB data')
         # self.N = 96 # batch size
         self.N = 60 # batch size
         # self.B = 1 # total number of files
@@ -1701,7 +1701,7 @@ class ILSVRCTrnLabQuantMapDataLayer(caffe.Layer):
     def load_overhead(self):
         self.hdf5filedir = '/data/efros/rzhang/datasets/ILSVRC2012_processed'
         if(self.verbose):
-            print '  Subdatabases found: %i'%self.B
+            print('  Subdatabases found: %i'%self.B)
         self.hdf5filepaths = np.zeros(self.B,dtype='object')
         self.hdf5s = np.zeros(self.B,dtype='object')
         self.data = np.zeros(self.B,dtype='object')
@@ -1762,7 +1762,7 @@ class ILSVRCTrnLabQuantMapDataLayer(caffe.Layer):
 
         if(self.verbose):
             for cc in range(len(cnt_inds)):
-                print '%s: %i: inds %i-%i from db %i'%(self.t.tocStr(),cc,cnt_inds[cc][0],cnt_inds[cc][-1],db_inds[cc])
+                print('%s: %i: inds %i-%i from db %i'%(self.t.tocStr(),cc,cnt_inds[cc][0],cnt_inds[cc][-1],db_inds[cc]))
 
         # fill in data from the databases
         data_ab = np.zeros((self.N,2,self.X/self.SS,self.Y/self.SS),dtype='float32')
@@ -1832,7 +1832,7 @@ class ILSVRCTrnLabQuantCircDataLayer(caffe.Layer):
 
         self.verbose = True
         if(self.verbose):
-            print 'Loading ILSVRC training LAB data'
+            print('Loading ILSVRC training LAB data')
         # self.N = 96 # batch size
         self.N = 70 # batch size
         # self.B = 1 # total number of files
@@ -1848,7 +1848,7 @@ class ILSVRCTrnLabQuantCircDataLayer(caffe.Layer):
     def load_overhead(self):
         self.hdf5filedir = '/data/efros/rzhang/datasets/ILSVRC2012_processed'
         if(self.verbose):
-            print '  Subdatabases found: %i'%self.B
+            print('  Subdatabases found: %i'%self.B)
         self.hdf5filepaths = np.zeros(self.B,dtype='object')
         self.hdf5s = np.zeros(self.B,dtype='object')
         self.data = np.zeros(self.B,dtype='object')
@@ -1910,7 +1910,7 @@ class ILSVRCTrnLabQuantCircDataLayer(caffe.Layer):
 
         if(self.verbose):
             for cc in range(len(cnt_inds)):
-                print '%s: %i: inds %i-%i from db %i'%(self.t.tocStr(),cc,cnt_inds[cc][0],cnt_inds[cc][-1],db_inds[cc])
+                print('%s: %i: inds %i-%i from db %i'%(self.t.tocStr(),cc,cnt_inds[cc][0],cnt_inds[cc][-1],db_inds[cc]))
 
         # fill in data from the databases
         data_ab = np.zeros((self.N,2,self.X/self.SS,self.Y/self.SS),dtype='float32')
@@ -1983,7 +1983,7 @@ class ILSVRCTrnLabQuantNNDataLayer(caffe.Layer):
 
         self.verbose = True
         if(self.verbose):
-            print 'Loading ILSVRC training LAB data'
+            print('Loading ILSVRC training LAB data')
         # self.N = 96 # batch size
         self.N = 68 # batch size
         self.B = 129 # total number of files
@@ -1997,7 +1997,7 @@ class ILSVRCTrnLabQuantNNDataLayer(caffe.Layer):
     def load_overhead(self):
         self.hdf5filedir = '/data/efros/rzhang/datasets/ILSVRC2012_processed'
         if(self.verbose):
-            print '  Subdatabases found: %i'%self.B
+            print('  Subdatabases found: %i'%self.B)
         self.hdf5filepaths = np.zeros(self.B,dtype='object')
         self.hdf5s = np.zeros(self.B,dtype='object')
         self.data = np.zeros(self.B,dtype='object')
@@ -2045,7 +2045,7 @@ class ILSVRCTrnLabQuantNNDataLayer(caffe.Layer):
 
         if(self.verbose):
             for cc in range(len(cnt_inds)):
-                print '%s: %i: inds %i-%i from db %i'%(self.t.tocStr(),cc,cnt_inds[cc][0],cnt_inds[cc][-1],db_inds[cc])
+                print('%s: %i: inds %i-%i from db %i'%(self.t.tocStr(),cc,cnt_inds[cc][0],cnt_inds[cc][-1],db_inds[cc]))
 
         # fill in data from the databases
         data_ab = np.zeros((self.N,2,self.X/self.SS,self.Y/self.SS),dtype='float32')

@@ -22,13 +22,13 @@ class img_data_transformer_corr():
 		self.use_imgnet_mean = use_imgnet_mean
 		if(use_imgnet_mean):
 			if(verbose):
-				print "Using Imagenet convention"
+				print("Using Imagenet convention")
 			# dummyMeanFile = '/home/eecs/rich.zhang/src/libs/caffe/python/caffe/imagenet/ilsvrc_2012_mean.npy'
 			dummyMeanFile = '/home/eecs/rich.zhang/src/libs/caffe5/python/caffe/imagenet/ilsvrc_2012_mean.npy'
 			self.MEAN = np.load(dummyMeanFile).mean(1).mean(1)
 		else:
 			if(verbose):
-				print "Using Places convention"
+				print("Using Places convention")
 			dummyMeanFile = '/home/eecs/rich.zhang/data_rzhang/models/caffe/placesCNN_upgraded/places_mean.mat'
 			self.MEAN = scipy.io.loadmat(dummyMeanFile)['image_mean'].mean(0).mean(0)
 
@@ -68,13 +68,13 @@ class img_data_transformer():
 		self.use_imgnet_mean = use_imgnet_mean
 		if(use_imgnet_mean):
 			if(verbose):
-				print "Using Imagenet convention"
+				print("Using Imagenet convention")
 			# dummyMeanFile = '/home/eecs/rich.zhang/src/libs/caffe/python/caffe/imagenet/ilsvrc_2012_mean.npy'
 			dummyMeanFile = '/home/eecs/rich.zhang/src/libs/caffe5/python/caffe/imagenet/ilsvrc_2012_mean.npy'
 			self.MEAN = np.load(dummyMeanFile).mean(1).mean(1)
 		else:
 			if(verbose):
-				print "Using Places convention"
+				print("Using Places convention")
 			dummyMeanFile = '/home/eecs/rich.zhang/data_rzhang/models/caffe/placesCNN_upgraded/places_mean.mat'
 			self.MEAN = scipy.io.loadmat(dummyMeanFile)['image_mean'].mean(0).mean(0)
 
@@ -118,7 +118,7 @@ class img_data_lab_transformer():
 		self.MEAN = np.array((50,0,0))
 		self.corr = corr # correct ordering of spatial axes
 		if(verbose):
-			print 'Converting between rgb to lab data format'
+			print('Converting between rgb to lab data format')
 
 	def img2data(self,imgs):
 		if(imgs.ndim==3):
@@ -166,7 +166,7 @@ class img_data_lab_transformer():
 			return imgs
 
 	def wtf():
-		print 0
+		print(0)
 
 # Timing class for tic toc operation
 class Timer():
@@ -224,7 +224,7 @@ class LoopETA():
 		if(pre!=""):
 			pre+=" "
 		if(np.mod(n,self.B)==0 or n==self.N-1): # every B iterations or in the last iteration
-			print pre+str(n)+"/"+str(self.N)+": "+self.t.tocStr()+"/"+self.t.tocStr(t=1.0*(self.N/(n+1.)*self.t.toc()))
+			print(pre+str(n)+"/"+str(self.N)+": "+self.t.tocStr()+"/"+self.t.tocStr(t=1.0*(self.N/(n+1.)*self.t.toc())))
 			return True
 		return False
 
@@ -397,7 +397,7 @@ def montage(imgs,PAD=5,RATIO=16/9.,EXTRA_PAD=(False,False),MM=-1,NN=-1,primeDir=
 		NN = np.ceil(1.0*N/MM)
 
 	if(verbose):
-		print str(MM)+" "+str(NN)
+		print(str(MM)+" "+str(NN))
 
 	if(primeDir==0): # write top-to-bottom
 		[grid_mm, grid_nn] = np.meshgrid(np.arange(MM,dtype='uint'), np.arange(NN,dtype='uint'))
@@ -1039,7 +1039,7 @@ def inds_to_mask(inds,N):
 
 def printV(text, obj):
 	if(obj.verbose):
-		print text
+		print(text)
 
 # HDF5 file
 # def load_from_hdf5(HDF5_FILEPATH, output=-1, prefix='', suffix=''):
@@ -1075,15 +1075,15 @@ def check_overwrite(filepath, overwrite, verbose=False):
 			os.remove(filepath)
 			TO_WRITE = True
 			if(verbose):
-				print "Overwriting existing file: "+str(filepath)
+				print("Overwriting existing file: "+str(filepath))
 		else:
 			TO_WRITE = False
 			if(verbose):
-				print "File already exists: "+str(filepath)
+				print("File already exists: "+str(filepath))
 	else:
 		TO_WRITE = True
 		if(verbose):
-			print "File does not exist, creating: "+str(filepath)
+			print("File does not exist, creating: "+str(filepath))
 
 	return TO_WRITE
 
@@ -1480,7 +1480,7 @@ def str_max_len(strs, returnStr=False):
 
 def print_strs(in_strs):
 	for cur_str in in_strs:
-		print cur_str
+		print(cur_str)
 
 def print_str_val(in_strs,in_vals,inds=-1,str_format='%.3f'):
 	# INPUTS
@@ -1491,7 +1491,7 @@ def print_str_val(in_strs,in_vals,inds=-1,str_format='%.3f'):
 	if(check_value(inds,-1)):
 		inds = np.arange(in_strs.size)
 	for (iii,ii) in enumerate(inds):
-		print ('%i: '+str_format+' %s')%(ii,in_vals[ii],in_strs[ii])
+		print(('%i: '+str_format+' %s')%(ii,in_vals[ii],in_strs[ii]))
 
 # def print_caffe_shapes(net,layers=-1,first_layer=-1,last_layer=-1):
 	# caffe_shapes(net,layers=layers,first_layer=first_layer,last_layer=last_layer):
@@ -1524,7 +1524,7 @@ def caffe_shapes(net,layers=-1,first_layer=-1,last_layer=-1,to_print=False):
 					shp_str = shp_str+'x'+str(s)
 				shp_str = shp_str[1:]
 				if(to_print):
-					print '%s: \t %s'%(shp_str,layer)
+					print('%s: \t %s'%(shp_str,layer))
 
 				num_params[ll] = np.prod(np.array(shp))
 
@@ -1564,7 +1564,7 @@ def caffe_param_shapes(net,layers=-1,first_layer=-1,last_layer=-1,first_blob_onl
 					shp_str = shp_str+'x'+str(s)
 				shp_str = shp_str[1:]
 				if(to_print):
-					print '%s [%i]:\t%s'%(layer,pp,shp_str)
+					print('%s [%i]:\t%s'%(layer,pp,shp_str))
 
 	return np.array((num_params))
 
