@@ -416,7 +416,7 @@ class LossMeterLayer(caffe.Layer):
             self.iter = np.load(self.ITER_PATH)
         else:
             self.iter = 0 # iteration counter
-        print 'Initial iteration: %i'%(self.iter+1)
+        print('Initial iteration: %i'%(self.iter+1))
 
     def reshape(self,bottom,top):
         0;
@@ -437,7 +437,7 @@ class LossMeterLayer(caffe.Layer):
                 for ll in range(self.L):
                     tmp_str += '%.3f, '%np.mean(self.losses[ll,:self.cnt+1])
             print_str = '%s: Iter %i, %s'%(self.prefix,self.iter+1,tmp_str)
-            print print_str
+            print(print_str)
 
             self.f = open(self.LOG_PATH,'a')
             self.f.write(print_str)
@@ -485,7 +485,7 @@ class LossMeterLayer(caffe.Layer):
             self.iter = np.load(self.ITER_PATH)
         else:
             self.iter = 0 # iteration counter
-        print 'Initial iteration: %i'%(self.iter+1)
+        print('Initial iteration: %i'%(self.iter+1))
 
     def reshape(self,bottom,top):
         0;
@@ -506,7 +506,7 @@ class LossMeterLayer(caffe.Layer):
                 for ll in range(self.L):
                     tmp_str += '%.3e, '%np.mean(self.losses[ll,:self.cnt+1])
             print_str = '%s: Iter %i, %s'%(self.prefix,self.iter+1,tmp_str)
-            print print_str
+            print(print_str)
 
             self.f = open(self.LOG_PATH,'a')
             self.f.write(print_str)
@@ -749,7 +749,7 @@ class GradientMagnitudeMeterLayer(caffe.Layer):
                     for ll in range(self.L):
                         tmp_str += ' / %.3f'%(np.mean(self.mags[ll,:self.h+1]))
                 print_str = 'GradMag: %s'%tmp_str
-                print print_str
+                print(print_str)
 
                 self.f = open(self.LOG_PATH,'a')
                 self.f.write(print_str)
@@ -1322,9 +1322,9 @@ class PriorFactor():
     #     self.softmax_correction_full_grid = genc.enc_full_grid_mtx_nd(self.softmax_correction,axis=0,returnGrid=True)
 
     def print_correction_stats(self):
-        print 'Prior factor correction:'
-        print '  (alpha,gamma) = (%.2f, %.2f)'%(self.alpha,self.gamma)
-        print '  (min,max,mean,med,exp) = (%.2f, %.2f, %.2f, %.2f, %.2f)'%(np.min(self.prior_factor),np.max(self.prior_factor),np.mean(self.prior_factor),np.median(self.prior_factor),np.sum(self.prior_factor*self.prior_probs))
+        print('Prior factor correction:')
+        print('  (alpha,gamma) = (%.2f, %.2f)'%(self.alpha,self.gamma))
+        print('  (min,max,mean,med,exp) = (%.2f, %.2f, %.2f, %.2f, %.2f)'%(np.min(self.prior_factor),np.max(self.prior_factor),np.mean(self.prior_factor),np.median(self.prior_factor),np.sum(self.prior_factor*self.prior_probs)))
 
     def forward(self,data_ab_quant,axis=1):
         # data_ab_quant = net.blobs['data_ab_quant_map_233'].data[...]

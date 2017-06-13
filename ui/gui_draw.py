@@ -3,6 +3,10 @@ import time
 import cv2
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
+try:
+    from PyQt4.QtCore import QString
+except ImportError:
+    QString = str
 from .ui_control import UIControl
 # from data.lab_gamut import *
 from data import lab_gamut
