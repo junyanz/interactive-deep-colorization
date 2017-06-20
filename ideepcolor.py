@@ -21,7 +21,7 @@ def parse_args():
     parser.add_argument('--cpu_mode', dest='cpu_mode', help='do not use gpu', action='store_true')
 
     # Main colorization model
-    parser.add_argument('--color_prototxt', absolute_importdest='color_prototxt', help='colorization caffe prototxt', type=str,
+    parser.add_argument('--color_prototxt', dest='color_prototxt', help='colorization caffe prototxt', type=str,
                         default='./models/reference_model/deploy_nodist.prototxt')
     parser.add_argument('--color_caffemodel', dest='color_caffemodel', help='colorization caffe prototxt', type=str,
                         default='./models/reference_model/model.caffemodel')
