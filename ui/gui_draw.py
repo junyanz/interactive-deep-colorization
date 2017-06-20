@@ -8,17 +8,18 @@ try:
 except ImportError:
     QString = str
 from .ui_control import UIControl
-# from data.lab_gamut import *
+
 from data import lab_gamut
 from skimage import color
 import os
 import datetime
 import glob
 import sys
-from pdb import set_trace as st
+import matplotlib as mpl
 import matplotlib.pyplot as plt
-
 import skimage
+
+mpl.use("Qt4Agg")
 
 class GUIDraw(QWidget):
     def __init__(self, model, dist_model=None, load_size=256, win_size=512, user_study=False, ui_time=60):
@@ -27,7 +28,7 @@ class GUIDraw(QWidget):
         self.image_file = None
         self.pos = None
         self.model = model
-        self.dist_model = dist_model # distribution predictor, could be empty
+        self.dist_model = dist_model  # distribution predictor, could be empty
         self.win_size = win_size
         self.load_size = load_size
         # self.scale = win_size / float(load_size)
@@ -35,7 +36,7 @@ class GUIDraw(QWidget):
         self.uiControl = UIControl(win_size=win_size, load_size=load_size)
         self.move(win_size, win_size)
         self.movie = True
-        self.init_color() # initialize color
+        self.init_color()  # initialize color
         self.im_gray3 = None
         self.eraseMode = False
         self.ui_mode = 'none'   # stroke or point
@@ -48,8 +49,6 @@ class GUIDraw(QWidget):
         self.ui_time = ui_time
         if user_study:
             self.reset_timer()
-
-
 
     def reset_timer(self):
         self.timer = QTimer()
@@ -85,7 +84,6 @@ class GUIDraw(QWidget):
         self.init_result(img_current)
         self.reset_timer()
 
-
     def read_image(self, image_file):
         # self.result = None
         self.image_loaded = True
@@ -101,8 +99,8 @@ class GUIDraw(QWidget):
         self.scale = float(self.win_size) / self.load_size
         print('scale = %f' % self.scale)
         # print('read_image_scale = %3.3f' % self.scale)
-        rw = int(round(r * w / 4.0 ) * 4)
-        rh = int(round(r * h / 4.0 ) * 4)
+        rw = int(round(r * w / 4.0) * 4)
+        rh = int(round(r * h / 4.0) * 4)
         # dim = (int(r*w), int(r*h))
 
         self.im_win = cv2.resize(self.im_full, (rw, rh), interpolation=cv2.INTER_CUBIC)

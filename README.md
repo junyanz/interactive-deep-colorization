@@ -4,7 +4,7 @@
 ### [[Project Page]](https://richzhang.github.io/ideepcolor/) [[Paper]](https://arxiv.org/abs/1705.02999) [[Demo Video]](https://youtu.be/eL5ilZgM89Q) [[Seminar Talk]](https://www.youtube.com/watch?v=FTzcFsz2xqw&feature=youtu.be&t=992)
 <img src='imgs/demo.gif' width=600>
 
-<!-- This repository contains a Python implementation for user-guided image colorization technique described in the following paper: -->
+
 [Richard Zhang](https://richzhang.github.io/)\*, [Jun-Yan Zhu](https://people.eecs.berkeley.edu/~junyanz/)\*, [Phillip Isola](http://people.eecs.berkeley.edu/~isola/), [Xinyang Geng](http://young-geng.xyz/), Angela S. Lin, Tianhe Yu, and [Alexei A. Efros](https://people.eecs.berkeley.edu/~efros/).
 **Real-Time User-Guided Image Colorization with Learned Deep Priors.**
 In ACM Transactions on Graphics (SIGGRAPH 2017).
@@ -31,20 +31,20 @@ cd ideepcolor
 bash ./models/fetch_models.sh
 ```
 
-- Install [Caffe](http://caffe.berkeleyvision.org/installation.html) and Python libraries ([OpenCV](http://opencv.org/))
+- Install [Caffe](http://caffe.berkeleyvision.org/installation.html) and 3rd party Python libraries ([OpenCV](http://opencv.org/), [scikit-learn](http://scikit-learn.org/stable/install.html) and [scikit-image](https://github.com/scikit-image/scikit-image)). See the [Requirements](#Requirements) for more details.
 
 ### (2) Interactive Colorization (Local Hints Network)
 <img src='imgs/teaser_v3.jpg' width=800>
 
 We provide a "barebones" demo in iPython notebook, which does not require QT. We also provide our full GUI demo.
 
-#### 2(a) Barebones Interactive Colorization Demo
+#### (2a) Barebones Interactive Colorization Demo
 
 - Run `ipython notebook` and click on [`DemoInteractiveColorization.ipynb`](./DemoInteractiveColorization.ipynb).
 
-#### 2(b) Full Demo GUI
+#### (2b) Full Demo GUI
 
-- Install [Qt4](https://wiki.python.org/moin/PyQt4) and [QDarkStyle](https://github.com/ColinDuquesnoy/QDarkStyleSheet). (See [Requirements](## (A) Requirements))
+- Install [Qt4](https://wiki.python.org/moin/PyQt4) and [QDarkStyle](https://github.com/ColinDuquesnoy/QDarkStyleSheet). (See [Installation](#Installation)
 
 - Run the UI: `python ideepcolor.py --gpu [GPU_ID]`. Arguments are described below:
 ```
@@ -76,8 +76,17 @@ We include an example usage of our Global Hints Network, applied to global histo
 
 - Run `ipython notebook`. Click on [`./DemoGlobalHistogramTransfer.ipynb`](./DemoGlobalHistogramTransfer.ipynb)
 
-### (A) Requirements
-- Caffe (See Caffe installation [document](http://caffe.berkeleyvision.org/installation.html))
+### Installation
+- Caffe (See Caffe [installation](http://caffe.berkeleyvision.org/installation.html). Please compile Caffe  with the python layer [support](https://chrischoy.github.io/research/caffe-python-layer/) (set `WITH_PYTHON_LAYER=1` in the `Makefile.config`) and compile caffe python library by `make pycaffe`.
+You also need to add `pycaffe` to your `PYTHONPATH`. Use `vi ~/.bashrc` to edit the environment variables.
+```bash
+PYTHONPATH=/path/to/caffe/python:$PYTHONPATH
+```
+- Scikit-image and scikit-learn pacakges:
+```
+sudo pip install scikit-image
+sudo pip install scikit-learn
+```
 - OpenCV
 ```
 sudo apt-get install python-opencv
@@ -91,5 +100,14 @@ sudo apt-get install python-qt4
 sudo pip install qdarkstyle
 ```
 
-### (B) Cat Paper Collection
+For Conda users, type the following command lines:
+```bash
+conda install -c anaconda scikit-learn=0.18.1  ## scikit-learn
+conda install -c anaconda scikit-image=0.13.0  ## scikit-image
+conda install -c menpo opencv=2.4.11   ## opencv
+conda install pyqt=4.11 ## qt4
+conda install -c auto qdarkstyle=1.9  ## qdarkstyle
+```
+
+### Cat Paper Collection
 One of the authors objects to the inclusion of this list, due to an allergy. Another author objects on the basis that cats are silly creatures and this is a serious, scientific paper. However, if you love cats, and love reading cool graphics, vision, and learning papers, please check out the Cat Paper Collection: [[Github]](https://github.com/junyanz/CatPapers) [[Webpage]](http://people.eecs.berkeley.edu/~junyanz/cat/cat_papers.html)
