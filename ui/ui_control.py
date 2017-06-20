@@ -3,6 +3,7 @@ from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 import cv2
 
+
 class UserEdit(object):
     def __init__(self, mode, win_size, load_size, img_size):
         self.mode = mode
@@ -11,13 +12,11 @@ class UserEdit(object):
         self.load_size = load_size
         print('image_size', self.img_size)
         max_width = np.max(self.img_size)
-        # print('max_width = %d' % max_width)
-        self.scale = float(max_width) /  self.load_size
+        self.scale = float(max_width) / self.load_size
         self.dw = int((self.win_size - img_size[0]) / 2)
         self.dh = int((self.win_size - img_size[1]) / 2)
         self.img_w = img_size[0]
         self.img_h = img_size[1]
-
         self.ui_count = 0
         print(self)
 
@@ -28,6 +27,7 @@ class UserEdit(object):
 
     def __str__(self):
         return "add (%s) with win_size %3.3f, load_size %3.3f" % (self.mode, self.win_size, self.load_size)
+
 
 class PointEdit(UserEdit):
     def __init__(self, win_size, load_size, img_size):
@@ -49,10 +49,8 @@ class PointEdit(UserEdit):
         self.color = color
         self.userColor = userColor
 
-
     def updateInput(self, im, mask, vis_im):
         w = int(self.width / self.scale)
-        # print('updateInput width = %d\n' % w)
         pnt = self.pnt
         x1, y1 = self.scale_point(pnt.x(), pnt.y(), -w)
         tl = (x1, y1)
@@ -67,7 +65,6 @@ class PointEdit(UserEdit):
     def is_same(self, pnt):
         dx = abs(self.pnt.x() - pnt.x())
         dy = abs(self.pnt.y() - pnt.y())
-        # print('is_same (dx, dy) = (%d, %d), width=%d' % (dx, dy, self.width))
         return dx <= self.width+1 and dy <= self.width+1
 
     def update_painter(self, painter):
@@ -89,11 +86,8 @@ class PointEdit(UserEdit):
 
 class UIControl:
     def __init__(self, win_size=256, load_size=512):
-        # self.img_size = img_size
         self.win_size = win_size
         self.load_size = load_size
-        # self.scale = scale
-
         self.reset()
         self.userEdit = None
         self.userEdits = []
@@ -101,15 +95,11 @@ class UIControl:
 
     def setImageSize(self, img_size):
         self.img_size = img_size
+
     def addStroke(self, prevPnt, nextPnt, color, userColor, width):
         pass
-        # if self.userEdit is None:
-        #     self.userEdit = StrokeEdit(self.scale)
-        # self.userEdit.addEdit(prevPnt, nextPnt, color, userColor, width)
-        # self.userEdit.updateInput(self.im, self.mask, self.vis_im)
 
     def erasePoint(self, pnt):
-        # self.ui_count+=1
         isErase = False
         for id, ue in enumerate(self.userEdits):
             if ue.is_same(pnt):
@@ -120,7 +110,7 @@ class UIControl:
         return isErase
 
     def addPoint(self, pnt, color, userColor, width):
-        self.ui_count+=1
+        self.ui_count += 1
         print('process add Point')
         self.userEdit = None
         isNew = True
@@ -155,9 +145,7 @@ class UIControl:
     def get_stroke_image(self, im):
         return im
 
-
     def used_colors(self):  # get recently used colors
-
         if len(self.userEdits) == 0:
             return None
         nEdits = len(self.userEdits)
@@ -177,19 +165,14 @@ class UIControl:
             for u_color in unique_colors:
                 d = np.sum(np.abs(u_color - ui_color))
                 if d < 0.1:
-                    is_exit=True
+                    is_exit = True
                     break
+
             if not is_exit:
                 unique_colors.append(ui_color)
-                    # unique_colors.append(u_color)
-                    # break
+
         unique_colors = np.vstack(unique_colors)
-        return unique_colors/255.0
-        # print(ids)
-        # print(ui_counts[ids])
-        # print(ui_colors[ids])
-            # print('edit %d, count %d\n' % (n, ue.ui_count))
-            # print('ui color', ue.color)
+        return unique_colors / 255.0
 
     def get_input(self):
         h = self.load_size
@@ -202,12 +185,7 @@ class UIControl:
             ue.updateInput(im, mask, vis_im)
         im_bgr = cv2.cvtColor(im, cv2.COLOR_RGB2BGR)
 
-        # cv2.imshow("input stroke", im_bgr)
-        # cv2.waitKey(1)
-        # cv2.imshow("input mask", mask)
-        # cv2.waitKey(1)
         return im, mask
-
 
     def reset(self):
         self.userEdits = []

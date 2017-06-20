@@ -1,7 +1,7 @@
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
-# import cv2
 import numpy as np
+
 
 class GUIPalette(QWidget):
     def __init__(self, grid_sz=(6, 3)):
@@ -22,11 +22,6 @@ class GUIPalette(QWidget):
             self.colors = (colors[:min(colors.shape[0], self.num_colors), :] * 255).astype(np.uint8)
             self.color_id = -1
             self.update()
-    # def update_color_id(self, color_id):
-    #     print('update color id')
-    #     self.color_id = color_id
-    #     self.update_ui()
-    #     self.update()
 
     def paintEvent(self, event):
         painter = QPainter()
@@ -43,7 +38,7 @@ class GUIPalette(QWidget):
                 x = grid_x * (self.color_width + self.border) + self.border
                 y = grid_y * (self.color_width + self.border) + self.border
 
-                if n ==  self.color_id:
+                if n == self.color_id:
                     painter.drawEllipse(x, y, self.color_width, self.color_width)
                 else:
                     painter.drawRoundedRect(x, y, self.color_width, self.color_width, 2, 2)
@@ -62,11 +57,11 @@ class GUIPalette(QWidget):
     def selected_color(self, pos):
         width = self.color_width + self.border
         dx = pos.x() % width
-        dy = pos.y() % width #(self.color_width + self.border)
+        dy = pos.y() % width
         if dx >= self.border and dy >= self.border:
-            x_id = (pos.x()- dx) / width
+            x_id = (pos.x() - dx) / width
             y_id = (pos.y() - dy) / width
-            color_id = x_id  + y_id * self.grid_sz[0]
+            color_id = x_id + y_id * self.grid_sz[0]
             return color_id
         else:
             return -1
@@ -85,12 +80,10 @@ class GUIPalette(QWidget):
             self.update_ui(color_id)
             self.mouseClicked = True
 
-
     def mouseMoveEvent(self, event):
         if self.mouseClicked:
             color_id = self.selected_color(event.pos())
             self.update_ui(color_id)
-
 
     def mouseReleaseEvent(self, event):
         self.mouseClicked = False
