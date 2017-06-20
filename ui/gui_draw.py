@@ -21,8 +21,9 @@ import skimage
 
 mpl.use("Qt4Agg")
 
+
 class GUIDraw(QWidget):
-    def __init__(self, model, dist_model=None, load_size=256, win_size=512, user_study=False, ui_time=60):
+    def __init__(self, model, dist_model=None, load_size=256, win_size=512):
         QWidget.__init__(self)
         self.model = None
         self.image_file = None
@@ -44,20 +45,7 @@ class GUIDraw(QWidget):
         self.use_gray = True
         self.total_images = 0
         self.image_id = 0
-        self.user_study = user_study
         self.method = 'with_dist'
-        self.ui_time = ui_time
-        if user_study:
-            self.reset_timer()
-
-    def reset_timer(self):
-        self.timer = QTimer()
-        self.timer.timeout.connect(self.nextImage)
-        self.count_secs = self.ui_time
-        self.timer.start((self.count_secs+5)*1000)
-        self.clock_timer = QTimer()
-        self.clock_timer.timeout.connect(self.clock_count)
-        self.clock_timer.start(1000)
 
     def clock_count(self):
         self.count_secs -= 1
@@ -136,11 +124,9 @@ class GUIDraw(QWidget):
             self.dist_model.set_image(self.im_rgb)
             self.predict_color()
 
-
     def update_im(self):
         self.update()
         QApplication.processEvents()
-
 
     def update_ui(self, move_point=True):
         if self.ui_mode == 'none':
@@ -344,20 +330,6 @@ class GUIDraw(QWidget):
             qImg = QImage(im.tostring(), im.shape[1], im.shape[0], QImage.Format_RGB888)
             painter.drawImage(self.dw, self.dh, qImg)
 
-        if im is not None and self.user_study and self.count_secs >= 0:
-            if self.count_secs == 10 or self.count_secs <= 5 or self.count_secs == 30:
-                # print('count seconds = %d\n' % self.count_secs)
-                painter.setPen(QPen(Qt.red, 20, Qt.SolidLine, cap=Qt.RoundCap, join=Qt.RoundJoin))
-                font_sz = 36
-                painter.setFont(QFont("times", font_sz))
-                painter.drawText(self.win_size/2-font_sz/2, font_sz, QString(str(self.count_secs)))
-
-        if im is not None and self.user_study and self.count_secs >= -5 and self.count_secs < 0:
-
-            painter.setPen(QPen(Qt.red, 20, Qt.SolidLine, cap=Qt.RoundCap, join=Qt.RoundJoin))
-            font_sz = 36
-            painter.setFont(QFont("times", font_sz))
-            painter.drawText(self.win_size / 2 - font_sz / 2-10, font_sz, QString(str('Timeout')))
         self.uiControl.update_painter(painter)
         painter.end()
 
@@ -379,12 +351,8 @@ class GUIDraw(QWidget):
         return d < 25
 
     def mousePressEvent(self, event):
-        if self.user_study:
-            if self.count_secs < 0:
-                return
         print('mouse press', event.pos())
         pos = self.valid_point(event.pos())
-
 
         if pos is not None:
             if event.button() == Qt.LeftButton:
@@ -404,10 +372,6 @@ class GUIDraw(QWidget):
 
 
     def mouseMoveEvent(self, event):
-        if self.user_study:
-            if self.count_secs < 0:
-                return
-        print('mouse move', event.pos())
         self.pos = self.valid_point(event.pos())
         if self.pos is not None:
             if self.ui_mode == 'point':

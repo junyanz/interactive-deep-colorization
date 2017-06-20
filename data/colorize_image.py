@@ -12,14 +12,16 @@ import os
 import sys
 from scipy.ndimage.interpolation import zoom
 
+
 def create_temp_directory(path_template, N=1e8):
     print(path_template)
-    cur_path = path_template%np.random.randint(0,N)
+    cur_path = path_template % np.random.randint(0, N)
     while(os.path.exists(cur_path)):
-        cur_path = path_template%np.random.randint(0,N)
-    print('Creating directory: %s'%cur_path)
+        cur_path = path_template % np.random.randint(0, N)
+    print('Creating directory: %s' % cur_path)
     os.mkdir(cur_path)
     return cur_path
+
 
 def lab2rgb_transpose(img_l, img_ab):
     ''' INPUTS
@@ -27,7 +29,7 @@ def lab2rgb_transpose(img_l, img_ab):
             img_ab     2xXxX     [-100,100]
         OUTPUTS
             returned value is XxXx3 '''
-    pred_lab = np.concatenate((img_l,img_ab),axis=0).transpose((1,2,0))
+    pred_lab = np.concatenate((img_l, img_ab), axis=0).transpose((1,2,0))
     pred_rgb = (np.clip(color.lab2rgb(pred_lab),0,1)*255).astype('uint8')
     return pred_rgb
 

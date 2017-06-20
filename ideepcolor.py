@@ -1,9 +1,6 @@
 from __future__ import print_function
 import platform
-
 import sys
-sys.path.append('./caffe_files')
-
 import argparse
 import qdarkstyle
 from PyQt4.QtGui import QApplication, QIcon
@@ -11,10 +8,12 @@ from PyQt4.QtCore import Qt
 from ui import gui_design
 from data import colorize_image as CI
 
+sys.path.append('./caffe_files')
+
 
 def parse_args():
     parser = argparse.ArgumentParser(description='iDeepColor: deep interactive colorization')
-
+    # basic parameters
     parser.add_argument('--win_size', dest='win_size', help='the size of the main window', type=int, default=512)
     parser.add_argument('--image_file', dest='image_file', help='input image', type=str, default='test_imgs/mortar_pestle.jpg')
     parser.add_argument('--gpu', dest='gpu', help='gpu id', type=int, default=0)
@@ -33,10 +32,7 @@ def parse_args():
                         default='./models/reference_model/model.caffemodel')
 
     # ***** DEPRECATED *****
-    parser.add_argument('--no_dist', dest='no_dist', help='do not use distribution prediction', action='store_true')
     parser.add_argument('--load_size', dest='load_size', help='image size', type=int, default=256)
-    parser.add_argument('--ui_time', dest='ui_time', help='ui time', type=int, default=60)
-    parser.add_argument('--user_study', dest='user_study', help='user study mode', action='store_true')
 
     args = parser.parse_args()
     return args
@@ -57,16 +53,13 @@ if __name__ == '__main__':
     colorModel = CI.ColorizeImageCaffe(Xd=args.load_size)
     colorModel.prep_net(args.gpu, args.color_prototxt, args.color_caffemodel)
 
-    if (args.no_dist):
-        distModel = None
-    else:
-        distModel = CI.ColorizeImageCaffeDist(Xd=args.load_size)
-        distModel.prep_net(args.gpu, args.dist_prototxt, args.dist_caffemodel)
+    distModel = CI.ColorizeImageCaffeDist(Xd=args.load_size)
+    distModel.prep_net(args.gpu, args.dist_prototxt, args.dist_caffemodel)
 
     # initialize application
     app = QApplication(sys.argv)
     window = gui_design.GUIDesign(color_model=colorModel, dist_model=distModel,
-                                  img_file=args.image_file, load_size=args.load_size, win_size=args.win_size, user_study=args.user_study, ui_time=args.ui_time)
+                                  img_file=args.image_file, load_size=args.load_size, win_size=args.win_size)
     app.setStyleSheet(qdarkstyle.load_stylesheet(pyside=False))  # comment this if you do not like dark stylesheet
     app.setWindowIcon(QIcon('imgs/logo.png'))  # load logo
     window.setWindowTitle('iColor')

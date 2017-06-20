@@ -6,9 +6,10 @@ from . import gui_gamut
 from . import gui_palette
 import time
 
+
 class GUIDesign(QWidget):
     def __init__(self, color_model, dist_model=None, img_file=None, load_size=256,
-        win_size=256, save_all=True, user_study=False, ui_time=60):
+                 win_size=256, save_all=True):
         # draw the layout
         QWidget.__init__(self)
         # main layout
@@ -34,50 +35,35 @@ class GUIDesign(QWidget):
         self.colorPush.setFixedWidth(self.customPalette.width())
         self.colorPush.setFixedHeight(25)
         self.colorPush.setStyleSheet("background-color: grey")
-        colorPushLayout =  self.AddWidget(self.colorPush, 'Color')
+        colorPushLayout = self.AddWidget(self.colorPush, 'Color')
         colorLayout.addLayout(colorPushLayout)
         colorLayout.setAlignment(Qt.AlignTop)
 
         # drawPad layout
         drawPadLayout = QVBoxLayout()
         mainLayout.addLayout(drawPadLayout)
-        self.drawWidget = gui_draw.GUIDraw(color_model, dist_model, load_size=load_size, win_size=win_size,
-        user_study=user_study, ui_time=ui_time)
+        self.drawWidget = gui_draw.GUIDraw(color_model, dist_model, load_size=load_size, win_size=win_size)
         drawPadLayout = self.AddWidget(self.drawWidget, 'Drawing Pad')
         mainLayout.addLayout(drawPadLayout)
 
-        drawPadMenu =  QHBoxLayout()
-
+        drawPadMenu = QHBoxLayout()
 
         self.bGray = QCheckBox("&Gray")
         self.bGray.setToolTip('show gray-scale image')
-
 
         self.bLoad = QPushButton('&Load')
         self.bLoad.setToolTip('load an input image')
         self.bSave = QPushButton("&Save")
         self.bSave.setToolTip('Save the current result.')
 
-
-        if user_study:
-            self.bNext =  QPushButton('&Next')
-            self.bNext.setToolTip('save the current one and go to the next image')
-
         drawPadMenu.addWidget(self.bGray)
-
-
-        if user_study:
-            drawPadMenu.addWidget(self.bNext)
-            self.bNext.clicked.connect(self.nextImage)
-        else:
-            drawPadMenu.addWidget(self.bLoad)
-            drawPadMenu.addWidget(self.bSave)
+        drawPadMenu.addWidget(self.bLoad)
+        drawPadMenu.addWidget(self.bSave)
 
         drawPadLayout.addLayout(drawPadMenu)
         self.visWidget = gui_vis.GUI_VIS(win_size=win_size, scale=win_size/load_size)
         visWidgetLayout = self.AddWidget(self.visWidget, 'Result')
         mainLayout.addLayout(visWidgetLayout)
-
 
         self.bRestart = QPushButton("&Restart")
         self.bRestart.setToolTip('Restart the system')
@@ -123,11 +109,7 @@ class GUIDesign(QWidget):
         self.start_t = time.time()
 
         if img_file is not None:
-            if user_study:
-                self.drawWidget.get_batches(img_file)
-            else:
-                self.drawWidget.init_result(img_file)
-
+            self.drawWidget.init_result(img_file)
 
     def AddWidget(self, widget, title):
         widgetLayout = QVBoxLayout()
