@@ -4,11 +4,12 @@ from PyQt4.QtGui import *
 from data import lab_gamut
 import numpy as np
 
+
 class GUIGamut(QWidget):
     def __init__(self, gamut_size=110):
         QWidget.__init__(self)
         self.gamut_size = gamut_size
-        self.win_size = gamut_size * 2 # divided by 4
+        self.win_size = gamut_size * 2  # divided by 4
         self.setFixedSize(self.win_size, self.win_size)
         self.ab_grid = lab_gamut.abGrid(gamut_size=gamut_size, D=1)
         self.reset()
@@ -20,14 +21,10 @@ class GUIGamut(QWidget):
 
     def set_ab(self, color):
         self.color = color
-        # print('set_rgb', color)
         self.lab = lab_gamut.rgb2lab_1d(self.color)
-        # print('set lab', self.lab)
-        x,y = self.ab_grid.ab2xy(self.lab[1], self.lab[2])
+        x, y = self.ab_grid.ab2xy(self.lab[1], self.lab[2])
         self.pos = QPointF(x, y)
-        print('set_ab x, y = %d, %d' % (x, y))
         self.update()
-
 
     def is_valid_point(self, pos):
         if pos is None:
@@ -46,9 +43,7 @@ class GUIGamut(QWidget):
         # get color we need L
         L = self.l_in
         lab = np.array([L, a, b])
-        # print('lab color', lab)
-        color = lab_gamut.lab2rgb_1d(lab, clip=True, dtype='uint8')# * 255
-        # print('rgb color', color)
+        color = lab_gamut.lab2rgb_1d(lab, clip=True, dtype='uint8')
         self.emit(SIGNAL('update_color'), color)
         self.update()
 
@@ -62,11 +57,7 @@ class GUIGamut(QWidget):
             qImg = QImage(ab_map.tostring(), self.win_size, self.win_size, QImage.Format_RGB888)
             painter.drawImage(0, 0, qImg)
 
-
-
         painter.setPen(QPen(Qt.gray, 3, Qt.DotLine, cap=Qt.RoundCap, join=Qt.RoundJoin))
-        # w = 2
-        # painter.drawEllipse(self.win_size/2-w, self.win_size/2-w, w*2, w*2)
         painter.drawLine(self.win_size/2, 0, self.win_size/2, self.win_size)
         painter.drawLine(0, self.win_size/2, self.win_size, self.win_size/2)
         if self.pos is not None:
@@ -78,14 +69,12 @@ class GUIGamut(QWidget):
             painter.drawLine(x, y - w, x, y + w)
         painter.end()
 
-
     def mousePressEvent(self, event):
         pos = event.pos()
 
-        if event.button() == Qt.LeftButton and self.is_valid_point(pos):  #click the point
+        if event.button() == Qt.LeftButton and self.is_valid_point(pos):  # click the point
             self.update_ui(pos)
             self.mouseClicked = True
-
 
     def mouseMoveEvent(self, event):
         pos = event.pos()
@@ -98,7 +87,6 @@ class GUIGamut(QWidget):
 
     def sizeHint(self):
         return QSize(self.win_size, self.win_size)
-
 
     def reset(self):
         self.ab_map = None

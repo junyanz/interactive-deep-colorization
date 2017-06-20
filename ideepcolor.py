@@ -48,7 +48,6 @@ if __name__ == '__main__':
         args.gpu = -1
 
     args.win_size = int(args.win_size / 4.0) * 4  # make sure the width of the image can be divided by 4
-
     # initialize the colorization model
     colorModel = CI.ColorizeImageCaffe(Xd=args.load_size)
     colorModel.prep_net(args.gpu, args.color_prototxt, args.color_caffemodel)

@@ -156,7 +156,7 @@ class GUIDesign(QWidget):
 
     def keyPressEvent(self, event):
         if event.key() == Qt.Key_R:
-           self.reset()
+            self.reset()
 
         if event.key() == Qt.Key_Q:
             self.save()
