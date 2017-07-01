@@ -3,6 +3,7 @@ import numpy as np
 import scipy as sp
 from skimage import color
 from pdb import set_trace as st
+import warnings
 
 
 def qcolor2lab_1d(qc):
@@ -18,6 +19,7 @@ def rgb2lab_1d(in_rgb):
 
 
 def lab2rgb_1d(in_lab, clip=True, dtype='uint8'):
+    warnings.filterwarnings("ignore")
     tmp_rgb = color.lab2rgb(in_lab[np.newaxis, np.newaxis, :]).flatten()
     if clip:
         tmp_rgb = np.clip(tmp_rgb, 0, 1)
@@ -30,6 +32,7 @@ def snap_ab(input_l, input_rgb, return_type='rgb'):
     ''' given an input lightness and rgb, snap the color into a region where l,a,b is in-gamut
     '''
     T = 20
+    warnings.filterwarnings("ignore")
     input_lab = rgb2lab_1d(np.array(input_rgb))  # convert input to lab
     conv_lab = input_lab.copy()  # keep ab from input
     for t in range(T):
@@ -64,6 +67,7 @@ class abGrid():
         self.gamut_size = gamut_size
 
     def update_gamut(self, l_in):
+        warnings.filterwarnings("ignore")
         thresh = 1.0
         pts_lab = np.concatenate((l_in + np.zeros((self.A, self.B, 1)), self.pts_full_grid), axis=2)
         self.pts_rgb = (255 * np.clip(color.lab2rgb(pts_lab), 0, 1)).astype('uint8')

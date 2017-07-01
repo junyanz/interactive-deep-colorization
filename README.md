@@ -41,6 +41,8 @@ We provide a "barebones" demo in iPython notebook, which does not require QT. We
 
 - Run `ipython notebook` and click on [`DemoInteractiveColorization.ipynb`](./DemoInteractiveColorization.ipynb).
 
+If you need to convert the Notebook to an older version, use `jupyter nbconvert --to notebook --nbformat 3 ./DemoInteractiveColorization.ipynb`.
+
 #### (2b) Full Demo GUI
 
 - Install [Qt4](https://wiki.python.org/moin/PyQt4) and [QDarkStyle](https://github.com/ColinDuquesnoy/QDarkStyleSheet). (See [Installation](#Installation)
