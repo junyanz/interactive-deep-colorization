@@ -45,7 +45,7 @@ def rgb2lab_transpose(img_rgb):
 
 
 class ColorizeImageBase():
-    def __init__(self, Xd=256, Xfullres_max=1200):
+    def __init__(self, Xd=256, Xfullres_max=10000):
         self.Xd = Xd
         self.img_l_set = False
         self.net_set = False
