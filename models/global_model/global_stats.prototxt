@@ -217,10 +217,8 @@ layer { # encode
   bottom: "data_ab_rs"
   top: "gt_ab_313" # quantized gt colors
   python_param {
-    module: 'caffe_datalayers'
-    # module: 'caffe_traininglayers'
+    module: 'caffe_traininglayers'
     layer: 'NNEncLayer'
-    # layer: 'NNEnc2Layer'
   }
 }
 layer {
