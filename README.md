@@ -45,7 +45,7 @@ If you need to convert the Notebook to an older version, use `jupyter nbconvert 
 
 #### (2b) Full Demo GUI
 
-- Install [Qt4](https://wiki.python.org/moin/PyQt4) and [QDarkStyle](https://github.com/ColinDuquesnoy/QDarkStyleSheet). (See [Installation](#Installation)
+- Install [Qt4](https://wiki.python.org/moin/PyQt4) and [QDarkStyle](https://github.com/ColinDuquesnoy/QDarkStyleSheet). (See [Installation](###Installation))
 
 - Run the UI: `python ideepcolor.py --gpu [GPU_ID]`. Arguments are described below:
 ```
