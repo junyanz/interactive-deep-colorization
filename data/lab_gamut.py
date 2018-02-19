@@ -1,4 +1,3 @@
-
 import numpy as np
 import scipy as sp
 from skimage import color
@@ -41,7 +40,7 @@ def snap_ab(input_l, input_rgb, return_type='rgb'):
         tmp_rgb = color.lab2rgb(conv_lab[np.newaxis, np.newaxis, :]).flatten()
         tmp_rgb = np.clip(tmp_rgb, 0, 1)
         conv_lab = color.rgb2lab(tmp_rgb[np.newaxis, np.newaxis, :]).flatten()
-        dif_lab = np.sum(np.abs(conv_lab-old_lab))
+        dif_lab = np.sum(np.abs(conv_lab - old_lab))
         if dif_lab < 1:
             break
         # print(conv_lab)
@@ -58,8 +57,8 @@ def snap_ab(input_l, input_rgb, return_type='rgb'):
 class abGrid():
     def __init__(self, gamut_size=110, D=1):
         self.D = D
-        self.vals_b, self.vals_a = np.meshgrid(np.arange(-gamut_size, gamut_size+D, D),
-                                               np.arange(-gamut_size, gamut_size+D, D))
+        self.vals_b, self.vals_a = np.meshgrid(np.arange(-gamut_size, gamut_size + D, D),
+                                               np.arange(-gamut_size, gamut_size + D, D))
         self.pts_full_grid = np.concatenate((self.vals_a[:, :, np.newaxis], self.vals_b[:, :, np.newaxis]), axis=2)
         self.A = self.pts_full_grid.shape[0]
         self.B = self.pts_full_grid.shape[1]
@@ -72,7 +71,7 @@ class abGrid():
         pts_lab = np.concatenate((l_in + np.zeros((self.A, self.B, 1)), self.pts_full_grid), axis=2)
         self.pts_rgb = (255 * np.clip(color.lab2rgb(pts_lab), 0, 1)).astype('uint8')
         pts_lab_back = color.rgb2lab(self.pts_rgb)
-        pts_lab_diff = np.linalg.norm(pts_lab-pts_lab_back, axis=2)
+        pts_lab_diff = np.linalg.norm(pts_lab - pts_lab_back, axis=2)
 
         self.mask = pts_lab_diff < thresh
         mask3 = np.tile(self.mask[..., np.newaxis], [1, 1, 3])

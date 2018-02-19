@@ -8,8 +8,8 @@ class GUIPalette(QWidget):
         QWidget.__init__(self)
         self.color_width = 25
         self.border = 6
-        self.win_width = grid_sz[0] * self.color_width + (grid_sz[0]+1) * self.border
-        self.win_height = grid_sz[1] * self.color_width + (grid_sz[1]+1) * self.border
+        self.win_width = grid_sz[0] * self.color_width + (grid_sz[0] + 1) * self.border
+        self.win_height = grid_sz[1] * self.color_width + (grid_sz[1] + 1) * self.border
         self.setFixedSize(self.win_width, self.win_height)
         self.num_colors = grid_sz[0] * grid_sz[1]
         self.grid_sz = grid_sz
@@ -59,15 +59,15 @@ class GUIPalette(QWidget):
         dx = pos.x() % width
         dy = pos.y() % width
         if dx >= self.border and dy >= self.border:
-            x_id = (pos.x() - dx) / width
-            y_id = (pos.y() - dy) / width
+            x_id = (pos.x() - dx) // width
+            y_id = (pos.y() - dy) // width
             color_id = x_id + y_id * self.grid_sz[0]
-            return color_id
+            return int(color_id)
         else:
             return -1
 
     def update_ui(self, color_id):
-        self.color_id = color_id
+        self.color_id = int(color_id)
         self.update()
         if color_id >= 0:
             color = self.colors[color_id]

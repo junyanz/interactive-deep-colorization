@@ -61,7 +61,7 @@ class GUIDesign(QWidget):
         drawPadMenu.addWidget(self.bSave)
 
         drawPadLayout.addLayout(drawPadMenu)
-        self.visWidget = gui_vis.GUI_VIS(win_size=win_size, scale=win_size/load_size)
+        self.visWidget = gui_vis.GUI_VIS(win_size=win_size, scale=win_size / load_size)
         visWidgetLayout = self.AddWidget(self.visWidget, 'Result')
         mainLayout.addLayout(visWidgetLayout)
 
@@ -144,7 +144,7 @@ class GUIDesign(QWidget):
         self.close()
 
     def save(self):
-        print('time spent = %3.3f' % (time.time()-self.start_t))
+        print('time spent = %3.3f' % (time.time() - self.start_t))
         self.drawWidget.save_result()
 
     def load(self):

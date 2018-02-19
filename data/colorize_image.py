@@ -32,7 +32,7 @@ def lab2rgb_transpose(img_l, img_ab):
         OUTPUTS
             returned value is XxXx3 '''
     pred_lab = np.concatenate((img_l, img_ab), axis=0).transpose((1, 2, 0))
-    pred_rgb = (np.clip(color.lab2rgb(pred_lab), 0, 1)*255).astype('uint8')
+    pred_rgb = (np.clip(color.lab2rgb(pred_lab), 0, 1) * 255).astype('uint8')
     return pred_rgb
 
 
@@ -99,9 +99,9 @@ class ColorizeImageBase():
             return -1
 
         self.input_ab = input_ab
-        self.input_ab_mc = (input_ab-self.ab_mean)/self.ab_norm
+        self.input_ab_mc = (input_ab - self.ab_mean) / self.ab_norm
         self.input_mask = input_mask
-        self.input_mask_mult = input_mask*self.mask_mult
+        self.input_mask_mult = input_mask * self.mask_mult
         return 0
 
     def get_result_PSNR(self, result=-1, return_SE_map=False):
@@ -109,9 +109,9 @@ class ColorizeImageBase():
             cur_result = self.get_img_forward()
         else:
             cur_result = result.copy()
-        SE_map = (1.*self.img_rgb-cur_result)**2
+        SE_map = (1. * self.img_rgb - cur_result)**2
         cur_MSE = np.mean(SE_map)
-        cur_PSNR = 20*np.log10(255./np.sqrt(cur_MSE))
+        cur_PSNR = 20 * np.log10(255. / np.sqrt(cur_MSE))
         if return_SE_map:
             return(cur_PSNR, SE_map)
         else:
@@ -134,13 +134,13 @@ class ColorizeImageBase():
         # Typically, this means that set_image() and net_forward()
         # have been called.
         # bilinear upsample
-        zoom_factor = (1, 1.*self.img_l_fullres.shape[1]/self.output_ab.shape[1], 1.*self.img_l_fullres.shape[2]/self.output_ab.shape[2])
+        zoom_factor = (1, 1. * self.img_l_fullres.shape[1] / self.output_ab.shape[1], 1. * self.img_l_fullres.shape[2] / self.output_ab.shape[2])
         output_ab_fullres = zoom(self.output_ab, zoom_factor, order=1)
 
         return lab2rgb_transpose(self.img_l_fullres, output_ab_fullres)
 
     def get_input_img_fullres(self):
-        zoom_factor = (1, 1.*self.img_l_fullres.shape[1]/self.input_ab.shape[1], 1.*self.img_l_fullres.shape[2]/self.input_ab.shape[2])
+        zoom_factor = (1, 1. * self.img_l_fullres.shape[1] / self.input_ab.shape[1], 1. * self.img_l_fullres.shape[2] / self.input_ab.shape[2])
         input_ab_fullres = zoom(self.input_ab, zoom_factor, order=1)
         return lab2rgb_transpose(self.img_l_fullres, input_ab_fullres)
 
@@ -149,22 +149,22 @@ class ColorizeImageBase():
 
     def get_img_mask(self):
         # Get black and white image
-        return lab2rgb_transpose(100.*(1-self.input_mask), np.zeros((2, self.Xd, self.Xd)))
+        return lab2rgb_transpose(100. * (1 - self.input_mask), np.zeros((2, self.Xd, self.Xd)))
 
     def get_img_mask_fullres(self):
         # Get black and white image
-        zoom_factor = (1, 1.*self.img_l_fullres.shape[1]/self.input_ab.shape[1], 1.*self.img_l_fullres.shape[2]/self.input_ab.shape[2])
+        zoom_factor = (1, 1. * self.img_l_fullres.shape[1] / self.input_ab.shape[1], 1. * self.img_l_fullres.shape[2] / self.input_ab.shape[2])
         input_mask_fullres = zoom(self.input_mask, zoom_factor, order=0)
-        return lab2rgb_transpose(100.*(1-input_mask_fullres), np.zeros((2, input_mask_fullres.shape[1], input_mask_fullres.shape[2])))
+        return lab2rgb_transpose(100. * (1 - input_mask_fullres), np.zeros((2, input_mask_fullres.shape[1], input_mask_fullres.shape[2])))
 
     def get_sup_img(self):
-        return lab2rgb_transpose(50*self.input_mask, self.input_ab)
+        return lab2rgb_transpose(50 * self.input_mask, self.input_ab)
 
     def get_sup_fullres(self):
-        zoom_factor = (1, 1.*self.img_l_fullres.shape[1]/self.output_ab.shape[1], 1.*self.img_l_fullres.shape[2]/self.output_ab.shape[2])
+        zoom_factor = (1, 1. * self.img_l_fullres.shape[1] / self.output_ab.shape[1], 1. * self.img_l_fullres.shape[2] / self.output_ab.shape[2])
         input_mask_fullres = zoom(self.input_mask, zoom_factor, order=0)
         input_ab_fullres = zoom(self.input_ab, zoom_factor, order=0)
-        return lab2rgb_transpose(50*input_mask_fullres, input_ab_fullres)
+        return lab2rgb_transpose(50 * input_mask_fullres, input_ab_fullres)
 
     # ***** Private functions *****
     def _set_img_lab_fullres_(self):
@@ -173,9 +173,9 @@ class ColorizeImageBase():
         Yfullres = self.img_rgb_fullres.shape[1]
         if Xfullres > self.Xfullres_max or Yfullres > self.Xfullres_max:
             if Xfullres > Yfullres:
-                zoom_factor = 1.*self.Xfullres_max/Xfullres
+                zoom_factor = 1. * self.Xfullres_max / Xfullres
             else:
-                zoom_factor = 1.*self.Xfullres_max/Yfullres
+                zoom_factor = 1. * self.Xfullres_max / Yfullres
             self.img_rgb_fullres = zoom(self.img_rgb_fullres, (zoom_factor, zoom_factor, 1), order=1)
 
         self.img_lab_fullres = color.rgb2lab(self.img_rgb_fullres).transpose((2, 0, 1))
@@ -191,7 +191,8 @@ class ColorizeImageBase():
     def _set_img_lab_mc_(self):
         # set self.img_lab_mc from self.img_lab
         # lab image, mean centered [XxYxX]
-        self.img_lab_mc = self.img_lab / np.array((self.l_norm, self.ab_norm, self.ab_norm))[:, np.newaxis, np.newaxis]-np.array((self.l_mean/self.l_norm, self.ab_mean/self.ab_norm, self.ab_mean/self.ab_norm))[:, np.newaxis, np.newaxis]
+        self.img_lab_mc = self.img_lab / np.array((self.l_norm, self.ab_norm, self.ab_norm))[:, np.newaxis, np.newaxis] - np.array(
+            (self.l_mean / self.l_norm, self.ab_mean / self.ab_norm, self.ab_mean / self.ab_norm))[:, np.newaxis, np.newaxis]
         self._set_img_l_()
 
     def _set_img_l_(self):
@@ -351,7 +352,7 @@ class ColorizeImageCaffeDist(ColorizeImageCaffe):
 
         # randomly sample from pdf
         cmf = np.cumsum(self.dist_ab[:, h, w])  # CMF
-        cmf = cmf/cmf[-1]
+        cmf = cmf / cmf[-1]
         cmf_bins = cmf
 
         # randomly sample N points
@@ -363,10 +364,10 @@ class ColorizeImageCaffeDist(ColorizeImageCaffe):
         kmeans = KMeans(n_clusters=K).fit(rnd_pts_ab)
 
         # sort by cluster occupancy
-        k_label_cnt = np.histogram(kmeans.labels_, np.arange(0, K+1))[0]
+        k_label_cnt = np.histogram(kmeans.labels_, np.arange(0, K + 1))[0]
         k_inds = np.argsort(k_label_cnt, axis=0)[::-1]
 
-        cluster_per = 1. * k_label_cnt[k_inds]/N  # percentage of points within cluster
+        cluster_per = 1. * k_label_cnt[k_inds] / N  # percentage of points within cluster
         cluster_centers = kmeans.cluster_centers_[k_inds, :]  # cluster centers
 
         # cluster_centers = np.random.uniform(low=-100,high=100,size=(N,2))
@@ -377,7 +378,7 @@ class ColorizeImageCaffeDist(ColorizeImageCaffe):
 
     def compute_entropy(self):
         # compute the distribution entropy (really slow right now)
-        self.dist_entropy = np.sum(self.dist_ab*np.log(self.dist_ab), axis=0)
+        self.dist_entropy = np.sum(self.dist_ab * np.log(self.dist_ab), axis=0)
 
     def plot_dist_grid(self, h, w):
         # Plots distribution at a given point

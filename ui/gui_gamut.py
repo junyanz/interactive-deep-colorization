@@ -58,8 +58,8 @@ class GUIGamut(QWidget):
             painter.drawImage(0, 0, qImg)
 
         painter.setPen(QPen(Qt.gray, 3, Qt.DotLine, cap=Qt.RoundCap, join=Qt.RoundJoin))
-        painter.drawLine(self.win_size/2, 0, self.win_size/2, self.win_size)
-        painter.drawLine(0, self.win_size/2, self.win_size, self.win_size/2)
+        painter.drawLine(self.win_size / 2, 0, self.win_size / 2, self.win_size)
+        painter.drawLine(0, self.win_size / 2, self.win_size, self.win_size / 2)
         if self.pos is not None:
             painter.setPen(QPen(Qt.black, 2, Qt.SolidLine, cap=Qt.RoundCap, join=Qt.RoundJoin))
             w = 5

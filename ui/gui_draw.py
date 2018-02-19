@@ -170,7 +170,7 @@ class GUIDraw(QWidget):
             print('WARNING: no point\n')
             return None
         else:
-            if pnt.x() >= self.dw and pnt.y() >= self.dh and pnt.x() < self.win_size-self.dw and pnt.y() < self.win_size-self.dh:
+            if pnt.x() >= self.dw and pnt.y() >= self.dh and pnt.x() < self.win_size - self.dw and pnt.y() < self.win_size - self.dh:
                 x = int(np.round(pnt.x()))
                 y = int(np.round(pnt.y()))
                 return QPoint(x, y)
@@ -242,7 +242,7 @@ class GUIDraw(QWidget):
         np.save(os.path.join(save_path, 'im_mask.npy'), self.im_mask0)
 
         result_bgr = cv2.cvtColor(self.result, cv2.COLOR_RGB2BGR)
-        mask = self.im_mask0.transpose((1, 2, 0)).astype(np.uint8)*255
+        mask = self.im_mask0.transpose((1, 2, 0)).astype(np.uint8) * 255
         cv2.imwrite(os.path.join(save_path, 'input_mask.png'), mask)
         cv2.imwrite(os.path.join(save_path, 'ours.png'), result_bgr)
         cv2.imwrite(os.path.join(save_path, 'ours_fullres.png'), self.model.get_img_fullres()[:, :, ::-1])
@@ -311,7 +311,7 @@ class GUIDraw(QWidget):
 
     def wheelEvent(self, event):
         d = event.delta() / 120
-        self.brushWidth = min(4.05*self.scale, max(0, self.brushWidth + d*self.scale))
+        self.brushWidth = min(4.05 * self.scale, max(0, self.brushWidth + d * self.scale))
         print('update brushWidth = %f' % self.brushWidth)
         self.update_ui(move_point=True)
         self.update()

@@ -65,7 +65,7 @@ class PointEdit(UserEdit):
     def is_same(self, pnt):
         dx = abs(self.pnt.x() - pnt.x())
         dy = abs(self.pnt.y() - pnt.y())
-        return dx <= self.width+1 and dy <= self.width+1
+        return dx <= self.width + 1 and dy <= self.width + 1
 
     def update_painter(self, painter):
         w = max(3, self.width)
@@ -75,13 +75,13 @@ class PointEdit(UserEdit):
         b = c.blue()
         ca = QColor(c.red(), c.green(), c.blue(), 255)
         d_to_black = r * r + g * g + b * b
-        d_to_white = (255-r) * (255-r) + (255-g) * (255-g) + (255-r) * (255-r)
+        d_to_white = (255 - r) * (255 - r) + (255 - g) * (255 - g) + (255 - r) * (255 - r)
         if d_to_black > d_to_white:
             painter.setPen(QPen(Qt.black, 1))
         else:
             painter.setPen(QPen(Qt.white, 1))
         painter.setBrush(ca)
-        painter.drawRoundedRect(self.pnt.x()-w, self.pnt.y()-w, 1+2*w, 1+2*w, 2, 2)
+        painter.drawRoundedRect(self.pnt.x() - w, self.pnt.y() - w, 1 + 2 * w, 1 + 2 * w, 2, 2)
 
 
 class UIControl:
