@@ -13,8 +13,8 @@ class UserEdit(object):
         print('image_size', self.img_size)
         max_width = np.max(self.img_size)
         self.scale = float(max_width) / self.load_size
-        self.dw = int((self.win_size - img_size[0]) / 2)
-        self.dh = int((self.win_size - img_size[1]) / 2)
+        self.dw = int((self.win_size - img_size[0]) // 2)
+        self.dh = int((self.win_size - img_size[1]) // 2)
         self.img_w = img_size[0]
         self.img_h = img_size[1]
         self.ui_count = 0

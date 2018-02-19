@@ -61,7 +61,7 @@ class GUIDesign(QWidget):
         drawPadMenu.addWidget(self.bSave)
 
         drawPadLayout.addLayout(drawPadMenu)
-        self.visWidget = gui_vis.GUI_VIS(win_size=win_size, scale=win_size / load_size)
+        self.visWidget = gui_vis.GUI_VIS(win_size=win_size, scale=win_size / float(load_size))
         visWidgetLayout = self.AddWidget(self.visWidget, 'Result')
         mainLayout.addLayout(visWidgetLayout)
 

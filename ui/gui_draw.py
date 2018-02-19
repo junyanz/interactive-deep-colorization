@@ -89,8 +89,8 @@ class GUIDraw(QWidget):
 
         self.im_win = cv2.resize(self.im_full, (rw, rh), interpolation=cv2.INTER_CUBIC)
 
-        self.dw = int((self.win_size - rw) / 2)
-        self.dh = int((self.win_size - rh) / 2)
+        self.dw = int((self.win_size - rw) // 2)
+        self.dh = int((self.win_size - rh) // 2)
         self.win_w = rw
         self.win_h = rh
         self.uiControl.setImageSize((rw, rh))

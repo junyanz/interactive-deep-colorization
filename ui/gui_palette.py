@@ -34,7 +34,7 @@ class GUIPalette(QWidget):
                 painter.setPen(QPen(Qt.black, 1))
                 painter.setBrush(ca)
                 grid_x = n % self.grid_sz[0]
-                grid_y = (n - grid_x) / self.grid_sz[0]
+                grid_y = (n - grid_x) // self.grid_sz[0]
                 x = grid_x * (self.color_width + self.border) + self.border
                 y = grid_y * (self.color_width + self.border) + self.border
 

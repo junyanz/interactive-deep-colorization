@@ -21,8 +21,8 @@ class GUI_VIS(QWidget):
         if self.result is not None:
             h, w, c = self.result.shape
             qImg = QImage(self.result.tostring(), w, h, QImage.Format_RGB888)
-            dw = int((self.win_width - w) / 2)
-            dh = int((self.win_height - h) / 2)
+            dw = int((self.win_width - w) // 2)
+            dh = int((self.win_height - h) // 2)
             painter.drawImage(dw, dh, qImg)
 
         painter.end()
