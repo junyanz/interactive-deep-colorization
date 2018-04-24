@@ -183,7 +183,6 @@ class UIControl:
 
         for ue in self.userEdits:
             ue.updateInput(im, mask, vis_im)
-        im_bgr = cv2.cvtColor(im, cv2.COLOR_RGB2BGR)
 
         return im, mask
 

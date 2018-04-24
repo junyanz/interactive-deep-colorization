@@ -5,7 +5,6 @@ import re
 import numpy as np
 import cv2
 import os
-import collections
 try:
     import pickle as pickle
 except ImportError:

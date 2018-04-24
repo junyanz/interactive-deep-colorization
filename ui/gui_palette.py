@@ -70,6 +70,7 @@ class GUIPalette(QWidget):
         self.color_id = int(color_id)
         self.update()
         if color_id >= 0:
+            print('choose color (%d) type (%s)' % (color_id, type(color_id)))
             color = self.colors[color_id]
             self.emit(SIGNAL('update_color'), color)
             self.update()

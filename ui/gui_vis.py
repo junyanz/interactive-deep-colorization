@@ -1,7 +1,5 @@
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
-import cv2
-import numpy as np
 
 
 class GUI_VIS(QWidget):

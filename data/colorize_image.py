@@ -1,17 +1,10 @@
 import numpy as np
-import scipy as sp
 import cv2
 import matplotlib.pyplot as plt
 from skimage import color
 import caffe
 from sklearn.cluster import KMeans
-from skimage.io import imread
-from skimage.io import imsave
-from skimage import color
 import os
-import sys
-import ntpath
-import datetime
 from scipy.ndimage.interpolation import zoom
 
 
@@ -79,7 +72,6 @@ class ColorizeImageBase():
 
         self.img_l_set = True
 
-        im = cv2.resize(self.img_rgb_fullres, (self.Xd, self.Xd))
         self.img_rgb = input_image
         # convert into lab space
         self._set_img_lab_()

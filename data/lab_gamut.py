@@ -1,7 +1,5 @@
 import numpy as np
-import scipy as sp
 from skimage import color
-from pdb import set_trace as st
 import warnings
 
 
