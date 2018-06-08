@@ -5,7 +5,7 @@
 <img src='imgs/demo.gif' width=600>  
 
 Real-Time User-Guided Image Colorization with Learned Deep Priors.  
-[Richard Zhang](https://richzhang.github.io/)\*, [Jun-Yan Zhu](https://people.eecs.berkeley.edu/~junyanz/)\*, [Phillip Isola](http://people.eecs.berkeley.edu/~isola/), [Xinyang Geng](http://young-geng.xyz/), Angela S. Lin, Tianhe Yu, and [Alexei A. Efros](https://people.eecs.berkeley.edu/~efros/).  
+[Richard Zhang](https://richzhang.github.io/)\*, [Jun-Yan Zhu](http://people.csail.mit.edu/junyanz/)\*, [Phillip Isola](http://people.eecs.berkeley.edu/~isola/), [Xinyang Geng](http://young-geng.xyz/), Angela S. Lin, Tianhe Yu, and [Alexei A. Efros](https://people.eecs.berkeley.edu/~efros/).  
 In ACM Transactions on Graphics (SIGGRAPH 2017).  
 (\*indicates equal contribution)
 
@@ -93,7 +93,6 @@ sudo apt-get install python-opencv
 sudo apt-get install python-qt4
 sudo pip install qdarkstyle
 ```
-
 For Conda users, type the following command lines:
 ```bash
 # ./install/install_conda.sh
@@ -105,6 +104,9 @@ conda install pyqt=4.11 ## qt4
 conda install -c auto qdarkstyle  ## qdarkstyle
 ```
 
+- **Docker**: [[OSX Docker file](https://hub.docker.com/r/vbisbest/ideepcolor_osx/)] and [[OSX Installation video](https://www.youtube.com/watch?v=IORcb4lQlxQ)] by @vbisbest,  [[Docker file 2](https://hub.docker.com/r/swallner/ideepcolor/)] (by @sabrinawallner) based on [DL Docker]((https://github.com/floydhub/dl-docker).
+
+- More installation [help](https://github.com/junyanz/interactive-deep-colorization/issues/10) (by @SleepProgger).
 ### Citation
 If you use this code for your research, please cite our paper:
 ```
