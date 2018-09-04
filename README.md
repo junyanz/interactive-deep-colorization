@@ -32,7 +32,7 @@ cd ideepcolor
 bash ./models/fetch_models.sh
 ```
 
-- Install [Caffe](http://caffe.berkeleyvision.org/installation.html) and 3rd party Python libraries ([OpenCV](http://opencv.org/), [scikit-learn](http://scikit-learn.org/stable/install.html) and [scikit-image](https://github.com/scikit-image/scikit-image)). See the [Requirements](#Requirements) for more details.
+- Install [Caffe](http://caffe.berkeleyvision.org/installation.html) or [PyTorch]() and 3rd party Python libraries ([OpenCV](http://opencv.org/), [scikit-learn](http://scikit-learn.org/stable/install.html) and [scikit-image](https://github.com/scikit-image/scikit-image)). See the [Requirements](#Requirements) for more details.
 
 ### (2) Interactive Colorization (Local Hints Network)
 <img src='imgs/teaser_v3.jpg' width=800>
