@@ -4,6 +4,8 @@
 [[Project Page]](https://richzhang.github.io/ideepcolor/) [[Paper]](https://arxiv.org/abs/1705.02999) [[Demo Video]](https://youtu.be/eL5ilZgM89Q) [[SIGGRAPH Talk]](https://www.youtube.com/watch?v=rp5LUSbdsys)
 <img src='imgs/demo.gif' width=600>  
 
+<b>9/3/2018 Update</b> The code now supports a backend PyTorch model. Please find a PyTorch reimplementation of the Local Hints Network training code in the [colorization-pytorch](https://github.com/richzhang/colorization-pytorch) repository.
+
 Real-Time User-Guided Image Colorization with Learned Deep Priors.  
 [Richard Zhang](https://richzhang.github.io/)\*, [Jun-Yan Zhu](http://people.csail.mit.edu/junyanz/)\*, [Phillip Isola](http://people.eecs.berkeley.edu/~isola/), [Xinyang Geng](http://young-geng.xyz/), Angela S. Lin, Tianhe Yu, and [Alexei A. Efros](https://people.eecs.berkeley.edu/~efros/).  
 In ACM Transactions on Graphics (SIGGRAPH 2017).  
@@ -11,7 +13,6 @@ In ACM Transactions on Graphics (SIGGRAPH 2017).
 
 We first describe the system <b>(0) Prerequisities</b> and steps for <b>(1) Getting started</b>. We then describe the interactive colorization demo <b>(2) Interactive Colorization (Local Hints Network)</b>. There are two demos: (a) a "barebones" version in iPython notebook and (b) the full GUI we used in our paper. We then provide an example of the <b>(3) Global Hints Network</b>.
 
-<b>9/13/2018 Update</b> The code now supports a backend PyTorch model. Please find a PyTorch reimplementation of the Local Hints Network training code in the [colorization-pytorch](https://github.com/richzhang/colorization-pytorch) repository.
 
 <img src='https://richzhang.github.io/ideepcolor/index_files/imagenet_showcase_small.jpg' width=800>
 
