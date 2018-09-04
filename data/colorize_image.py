@@ -2,10 +2,10 @@ import numpy as np
 import cv2
 import matplotlib.pyplot as plt
 from skimage import color
-import caffe
 from sklearn.cluster import KMeans
 import os
 from scipy.ndimage.interpolation import zoom
+
 
 
 def create_temp_directory(path_template, N=1e8):
@@ -198,6 +198,159 @@ class ColorizeImageBase():
         self.output_lab = rgb2lab_transpose(self.output_rgb)
         self.output_ab = self.output_lab[1:, :, :]
 
+class ColorizeImageTorch(ColorizeImageBase):
+    def __init__(self, Xd=256):
+        print('ColorizeImageTorch instantiated')
+        ColorizeImageBase.__init__(self, Xd)
+        self.l_norm = 1.
+        self.ab_norm = 1.
+        self.l_mean = 50.
+        self.ab_mean = 0.
+        self.mask_mult = 1.
+
+        # Load grid properties
+        self.pts_in_hull = np.array(np.meshgrid(np.arange(-110,120,10),np.arange(-110,120,10))).reshape((2,529)).T
+
+    # ***** Net preparation *****
+    def prep_net(self, gpu_id=None, path='',dist=False):
+        import torch
+        import models.pytorch.model as model
+
+        print('path = %s' % (path))
+
+        print('Model set! dist mode? ', dist)
+        self.net = model.SIGGRAPHGenerator(dist=dist)
+        self.net.load_state_dict(torch.load(path))
+        if gpu_id!=-1:
+            self.net.cuda()
+        self.net.eval()
+        self.net_set = True
+
+    # ***** Call forward *****
+    def net_forward(self, input_ab, input_mask):
+        # INPUTS
+        #     ab         2xXxX     input color patches (non-normalized)
+        #     mask     1xXxX    input mask, indicating which points have been provided
+        # assumes self.img_l_mc has been set
+
+        if ColorizeImageBase.net_forward(self, input_ab, input_mask) == -1:
+            return -1
+
+        # net_input_prepped = np.concatenate((self.img_l_mc, self.input_ab_mc, self.input_mask_mult), axis=0)
+
+        # return prediction
+        # self.net.blobs['data_l_ab_mask'].data[...] = net_input_prepped
+        # embed()
+        output_ab = self.net.forward(self.img_l_mc, self.input_ab_mc, self.input_mask_mult)[0,:,:,:].cpu().data.numpy()
+        self.output_rgb = lab2rgb_transpose(self.img_l, output_ab)
+        # self.output_rgb = lab2rgb_transpose(self.img_l, self.net.blobs[self.pred_ab_layer].data[0, :, :, :])
+
+        self._set_out_ab_()
+        return self.output_rgb
+
+    def get_img_forward(self):
+        # get image with point estimate
+        return self.output_rgb
+
+    def get_img_gray(self):
+        # Get black and white image
+        return lab2rgb_transpose(self.img_l, np.zeros((2, self.Xd, self.Xd)))
+
+class ColorizeImageTorchDist(ColorizeImageTorch):
+    def __init__(self, Xd=256):
+        ColorizeImageTorch.__init__(self, Xd)
+        self.dist_ab_set = False
+        self.pts_grid = np.array(np.meshgrid(np.arange(-110,120,10),np.arange(-110,120,10))).reshape((2,529)).T
+        self.in_hull = np.ones(529,dtype=bool)
+        self.AB = self.pts_grid.shape[0]  # 529
+        self.A = int(np.sqrt(self.AB))  # 23
+        self.B = int(np.sqrt(self.AB))  # 23
+        self.dist_ab_full = np.zeros((self.AB, self.Xd, self.Xd))
+        self.dist_ab_grid = np.zeros((self.A, self.B, self.Xd, self.Xd))
+        self.dist_entropy = np.zeros((self.Xd, self.Xd))
+
+    def prep_net(self, gpu_id=None, path='',dist=True,S=.2):
+        ColorizeImageTorch.prep_net(self, gpu_id=gpu_id, path=path, dist=dist)
+        # set S somehow
+
+    def net_forward(self, input_ab, input_mask):
+        # INPUTS
+        #     ab         2xXxX     input color patches (non-normalized)
+        #     mask     1xXxX    input mask, indicating which points have been provided
+        # assumes self.img_l_mc has been set
+
+        # embed()
+        if ColorizeImageBase.net_forward(self, input_ab, input_mask) == -1:
+            return -1
+
+        # set distribution
+        (function_return, self.dist_ab) = self.net.forward(self.img_l_mc, self.input_ab_mc, self.input_mask_mult)
+        function_return = function_return[0,:,:,:].cpu().data.numpy()
+        self.dist_ab = self.dist_ab[0,:,:,:].cpu().data.numpy()
+        self.dist_ab_set = True
+
+        # full grid, ABxXxX, AB = 529
+        self.dist_ab_full[self.in_hull, :, :] = self.dist_ab
+
+        # gridded, AxBxXxX, A = 23
+        self.dist_ab_grid = self.dist_ab_full.reshape((self.A, self.B, self.Xd, self.Xd))
+
+        # return
+        return function_return
+
+    def get_ab_reccs(self, h, w, K=5, N=25000, return_conf=False):
+        ''' Recommended colors at point (h,w)
+        Call this after calling net_forward
+        '''
+        if not self.dist_ab_set:
+            print('Need to set prediction first')
+            return 0
+
+        # randomly sample from pdf
+        cmf = np.cumsum(self.dist_ab[:, h, w])  # CMF
+        cmf = cmf/cmf[-1]
+        cmf_bins = cmf
+
+        # randomly sample N points
+        rnd_pts = np.random.uniform(low=0, high=1.0, size=N)
+        inds = np.digitize(rnd_pts, bins=cmf_bins)
+        rnd_pts_ab = self.pts_in_hull[inds, :]
+
+        # run k-means
+        kmeans = KMeans(n_clusters=K).fit(rnd_pts_ab)
+
+        # sort by cluster occupancy
+        k_label_cnt = np.histogram(kmeans.labels_, np.arange(0, K+1))[0]
+        k_inds = np.argsort(k_label_cnt, axis=0)[::-1]
+
+        cluster_per = 1. * k_label_cnt[k_inds]/N  # percentage of points within cluster
+        cluster_centers = kmeans.cluster_centers_[k_inds, :]  # cluster centers
+
+        # cluster_centers = np.random.uniform(low=-100,high=100,size=(N,2))
+        if return_conf:
+            return cluster_centers, cluster_per
+        else:
+            return cluster_centers
+
+    def compute_entropy(self):
+        # compute the distribution entropy (really slow right now)
+        self.dist_entropy = np.sum(self.dist_ab*np.log(self.dist_ab), axis=0)
+
+    def plot_dist_grid(self, h, w):
+        # Plots distribution at a given point
+        plt.figure()
+        plt.imshow(self.dist_ab_grid[:, :, h, w], extent=[-110, 110, 110, -110], interpolation='nearest')
+        plt.colorbar()
+        plt.ylabel('a')
+        plt.xlabel('b')
+
+    def plot_dist_entropy(self):
+        # Plots distribution at a given point
+        plt.figure()
+        plt.imshow(-self.dist_entropy, interpolation='nearest')
+        plt.colorbar()
+
+
 
 class ColorizeImageCaffe(ColorizeImageBase):
     def __init__(self, Xd=256):
@@ -217,6 +370,7 @@ class ColorizeImageCaffe(ColorizeImageBase):
 
     # ***** Net preparation *****
     def prep_net(self, gpu_id, prototxt_path='', caffemodel_path=''):
+        import caffe
         print('gpu_id = %d, net_path = %s, model_path = %s' % (gpu_id, prototxt_path, caffemodel_path))
         if gpu_id == -1:
             caffe.set_mode_cpu()

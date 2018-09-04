@@ -19,17 +19,25 @@ def parse_args():
     parser.add_argument('--gpu', dest='gpu', help='gpu id', type=int, default=0)
     parser.add_argument('--cpu_mode', dest='cpu_mode', help='do not use gpu', action='store_true')
 
-    # Main colorization model
+    # Caffe - Main colorization model
     parser.add_argument('--color_prototxt', dest='color_prototxt', help='colorization caffe prototxt', type=str,
                         default='./models/reference_model/deploy_nodist.prototxt')
     parser.add_argument('--color_caffemodel', dest='color_caffemodel', help='colorization caffe prototxt', type=str,
                         default='./models/reference_model/model.caffemodel')
 
-    # Distribution prediction model
+    # Caffe - Distribution prediction model
     parser.add_argument('--dist_prototxt', dest='dist_prototxt', type=str, help='distribution net prototxt',
                         default='./models/reference_model/deploy_nopred.prototxt')
     parser.add_argument('--dist_caffemodel', dest='dist_caffemodel', type=str, help='distribution net caffemodel',
                         default='./models/reference_model/model.caffemodel')
+
+    # PyTorch (same model used for both)
+    parser.add_argument('--color_model', dest='color_model', help='colorization model', type=str,
+                        default='./models/pytorch/model.pth')
+    parser.add_argument('--dist_model', dest='color_model', help='colorization distribution prediction model', type=str,
+                        default='./models/pytorch/model.pth')
+
+    parser.add_argument('--backend', dest='backend', type=str, help='caffe or pytorch', default='caffe')
 
     # ***** DEPRECATED *****
     parser.add_argument('--load_size', dest='load_size', help='image size', type=int, default=256)
@@ -48,12 +56,23 @@ if __name__ == '__main__':
         args.gpu = -1
 
     args.win_size = int(args.win_size / 4.0) * 4  # make sure the width of the image can be divided by 4
-    # initialize the colorization model
-    colorModel = CI.ColorizeImageCaffe(Xd=args.load_size)
-    colorModel.prep_net(args.gpu, args.color_prototxt, args.color_caffemodel)
 
-    distModel = CI.ColorizeImageCaffeDist(Xd=args.load_size)
-    distModel.prep_net(args.gpu, args.dist_prototxt, args.dist_caffemodel)
+    if(args.backend=='caffe'):
+        # initialize the colorization model
+        colorModel = CI.ColorizeImageCaffe(Xd=args.load_size)
+        colorModel.prep_net(args.gpu, args.color_prototxt, args.color_caffemodel)
+
+        distModel = CI.ColorizeImageCaffeDist(Xd=args.load_size)
+        distModel.prep_net(args.gpu, args.dist_prototxt, args.dist_caffemodel)
+    elif(args.backend=='pytorch'):
+        colorModel = CI.ColorizeImageTorch(Xd=args.load_size)
+        colorModel.prep_net(path=args.color_model)
+
+        distModel = CI.ColorizeImageTorchDist(Xd=args.load_size)
+        distModel.prep_net(path=args.color_model,dist=True)
+    else:
+        print('backend type [%s] not found!'%args.backend)
+
 
     # initialize application
     app = QApplication(sys.argv)

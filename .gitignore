@@ -25,6 +25,9 @@ user_test/
 *.caffemodel
 *.solverstate
 
+# PyTorch models
+*.pth
+
 # Object files
 *.o
 *.os
