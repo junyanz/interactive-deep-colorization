@@ -1,5 +1,4 @@
 from __future__ import print_function
-import platform
 import sys
 import argparse
 import qdarkstyle
@@ -52,27 +51,26 @@ if __name__ == '__main__':
     for arg in vars(args):
         print('[%s] =' % arg, getattr(args, arg))
 
-    if(args.cpu_mode):
+    if args.cpu_mode:
         args.gpu = -1
 
     args.win_size = int(args.win_size / 4.0) * 4  # make sure the width of the image can be divided by 4
 
-    if(args.backend=='caffe'):
+    if args.backend == 'caffe':
         # initialize the colorization model
         colorModel = CI.ColorizeImageCaffe(Xd=args.load_size)
         colorModel.prep_net(args.gpu, args.color_prototxt, args.color_caffemodel)
 
         distModel = CI.ColorizeImageCaffeDist(Xd=args.load_size)
         distModel.prep_net(args.gpu, args.dist_prototxt, args.dist_caffemodel)
-    elif(args.backend=='pytorch'):
+    elif args.backend == 'pytorch':
         colorModel = CI.ColorizeImageTorch(Xd=args.load_size)
         colorModel.prep_net(path=args.color_model)
 
         distModel = CI.ColorizeImageTorchDist(Xd=args.load_size)
-        distModel.prep_net(path=args.color_model,dist=True)
+        distModel.prep_net(path=args.color_model, dist=True)
     else:
-        print('backend type [%s] not found!'%args.backend)
-
+        print('backend type [%s] not found!' % args.backend)
 
     # initialize application
     app = QApplication(sys.argv)

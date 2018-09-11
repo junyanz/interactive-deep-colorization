@@ -215,7 +215,7 @@ class ColorizeImageTorch(ColorizeImageBase):
     def prep_net(self, gpu_id=None, path='', dist=False):
         import torch
         import models.pytorch.model as model
-        device = torch.device('cuda:{}'.format(gpu_id[0])) if gpu_id else torch.device('cpu')
+        device = torch.device('cuda:{}'.format(gpu_id)) if gpu_id != -1 else torch.device('cpu')
         print('path = %s, device = %s' % (path, device))
         print('Model set! dist mode? ', dist)
         self.net = model.SIGGRAPHGenerator(dist=dist)

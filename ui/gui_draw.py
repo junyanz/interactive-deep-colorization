@@ -1,5 +1,4 @@
 import numpy as np
-import time
 import cv2
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
@@ -195,7 +194,6 @@ class GUIDraw(QWidget):
 
     def calibrate_color(self, c, pos):
         x, y = self.scale_point(pos)
-        P = int(self.brushWidth / self.scale)
 
         # snap color based on L color
         color_array = np.array((c.red(), c.green(), c.blue())).astype(
