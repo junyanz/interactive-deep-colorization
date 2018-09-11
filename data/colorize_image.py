@@ -215,11 +215,10 @@ class ColorizeImageTorch(ColorizeImageBase):
     def prep_net(self, gpu_id=None, path='', dist=False):
         import torch
         import models.pytorch.model as model
-        device = torch.device('cuda:{}'.format(gpu_id)) if gpu_id != -1 else torch.device('cpu')
-        print('path = %s, device = %s' % (path, device))
+        print('path = %s' % path)
         print('Model set! dist mode? ', dist)
         self.net = model.SIGGRAPHGenerator(dist=dist)
-        state_dict = torch.load(path, map_location=str(device))
+        state_dict = torch.load(path)
         if hasattr(state_dict, '_metadata'):
             del state_dict._metadata
 
@@ -227,6 +226,8 @@ class ColorizeImageTorch(ColorizeImageBase):
         for key in list(state_dict.keys()):  # need to copy keys here because we mutate in loop
             self.__patch_instance_norm_state_dict(state_dict, self.net, key.split('.'))
         self.net.load_state_dict(state_dict)
+        if gpu_id != -1:
+            self.net.cuda()
         self.net.eval()
         self.net_set = True
 
