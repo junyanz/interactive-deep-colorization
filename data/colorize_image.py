@@ -7,7 +7,6 @@ import os
 from scipy.ndimage.interpolation import zoom
 
 
-
 def create_temp_directory(path_template, N=1e8):
     print(path_template)
     cur_path = path_template % np.random.randint(0, N)
@@ -198,6 +197,7 @@ class ColorizeImageBase():
         self.output_lab = rgb2lab_transpose(self.output_rgb)
         self.output_ab = self.output_lab[1:, :, :]
 
+
 class ColorizeImageTorch(ColorizeImageBase):
     def __init__(self, Xd=256):
         print('ColorizeImageTorch instantiated')
@@ -209,22 +209,39 @@ class ColorizeImageTorch(ColorizeImageBase):
         self.mask_mult = 1.
 
         # Load grid properties
-        self.pts_in_hull = np.array(np.meshgrid(np.arange(-110,120,10),np.arange(-110,120,10))).reshape((2,529)).T
+        self.pts_in_hull = np.array(np.meshgrid(np.arange(-110, 120, 10), np.arange(-110, 120, 10))).reshape((2, 529)).T
 
     # ***** Net preparation *****
-    def prep_net(self, gpu_id=None, path='',dist=False):
+    def prep_net(self, gpu_id=None, path='', dist=False):
         import torch
         import models.pytorch.model as model
-
-        print('path = %s' % (path))
-
+        device = torch.device('cuda:{}'.format(gpu_id[0])) if gpu_id else torch.device('cpu')
+        print('path = %s, device = %s' % (path, device))
         print('Model set! dist mode? ', dist)
         self.net = model.SIGGRAPHGenerator(dist=dist)
-        self.net.load_state_dict(torch.load(path))
-        if gpu_id!=-1:
-            self.net.cuda()
+        state_dict = torch.load(path, map_location=str(device))
+        if hasattr(state_dict, '_metadata'):
+            del state_dict._metadata
+
+        # patch InstanceNorm checkpoints prior to 0.4
+        for key in list(state_dict.keys()):  # need to copy keys here because we mutate in loop
+            self.__patch_instance_norm_state_dict(state_dict, self.net, key.split('.'))
+        self.net.load_state_dict(state_dict)
         self.net.eval()
         self.net_set = True
+
+    def __patch_instance_norm_state_dict(self, state_dict, module, keys, i=0):
+        key = keys[i]
+        if i + 1 == len(keys):  # at the end, pointing to a parameter/buffer
+            if module.__class__.__name__.startswith('InstanceNorm') and \
+                    (key == 'running_mean' or key == 'running_var'):
+                if getattr(module, key) is None:
+                    state_dict.pop('.'.join(keys))
+            if module.__class__.__name__.startswith('InstanceNorm') and \
+               (key == 'num_batches_tracked'):
+                state_dict.pop('.'.join(keys))
+        else:
+            self.__patch_instance_norm_state_dict(state_dict, getattr(module, key), keys, i + 1)
 
     # ***** Call forward *****
     def net_forward(self, input_ab, input_mask):
@@ -241,7 +258,7 @@ class ColorizeImageTorch(ColorizeImageBase):
         # return prediction
         # self.net.blobs['data_l_ab_mask'].data[...] = net_input_prepped
         # embed()
-        output_ab = self.net.forward(self.img_l_mc, self.input_ab_mc, self.input_mask_mult)[0,:,:,:].cpu().data.numpy()
+        output_ab = self.net.forward(self.img_l_mc, self.input_ab_mc, self.input_mask_mult)[0, :, :, :].cpu().data.numpy()
         self.output_rgb = lab2rgb_transpose(self.img_l, output_ab)
         # self.output_rgb = lab2rgb_transpose(self.img_l, self.net.blobs[self.pred_ab_layer].data[0, :, :, :])
 
@@ -256,12 +273,13 @@ class ColorizeImageTorch(ColorizeImageBase):
         # Get black and white image
         return lab2rgb_transpose(self.img_l, np.zeros((2, self.Xd, self.Xd)))
 
+
 class ColorizeImageTorchDist(ColorizeImageTorch):
     def __init__(self, Xd=256):
         ColorizeImageTorch.__init__(self, Xd)
         self.dist_ab_set = False
-        self.pts_grid = np.array(np.meshgrid(np.arange(-110,120,10),np.arange(-110,120,10))).reshape((2,529)).T
-        self.in_hull = np.ones(529,dtype=bool)
+        self.pts_grid = np.array(np.meshgrid(np.arange(-110, 120, 10), np.arange(-110, 120, 10))).reshape((2, 529)).T
+        self.in_hull = np.ones(529, dtype=bool)
         self.AB = self.pts_grid.shape[0]  # 529
         self.A = int(np.sqrt(self.AB))  # 23
         self.B = int(np.sqrt(self.AB))  # 23
@@ -269,7 +287,7 @@ class ColorizeImageTorchDist(ColorizeImageTorch):
         self.dist_ab_grid = np.zeros((self.A, self.B, self.Xd, self.Xd))
         self.dist_entropy = np.zeros((self.Xd, self.Xd))
 
-    def prep_net(self, gpu_id=None, path='',dist=True,S=.2):
+    def prep_net(self, gpu_id=None, path='', dist=True, S=.2):
         ColorizeImageTorch.prep_net(self, gpu_id=gpu_id, path=path, dist=dist)
         # set S somehow
 
@@ -285,8 +303,8 @@ class ColorizeImageTorchDist(ColorizeImageTorch):
 
         # set distribution
         (function_return, self.dist_ab) = self.net.forward(self.img_l_mc, self.input_ab_mc, self.input_mask_mult)
-        function_return = function_return[0,:,:,:].cpu().data.numpy()
-        self.dist_ab = self.dist_ab[0,:,:,:].cpu().data.numpy()
+        function_return = function_return[0, :, :, :].cpu().data.numpy()
+        self.dist_ab = self.dist_ab[0, :, :, :].cpu().data.numpy()
         self.dist_ab_set = True
 
         # full grid, ABxXxX, AB = 529
@@ -308,7 +326,7 @@ class ColorizeImageTorchDist(ColorizeImageTorch):
 
         # randomly sample from pdf
         cmf = np.cumsum(self.dist_ab[:, h, w])  # CMF
-        cmf = cmf/cmf[-1]
+        cmf = cmf / cmf[-1]
         cmf_bins = cmf
 
         # randomly sample N points
@@ -320,10 +338,10 @@ class ColorizeImageTorchDist(ColorizeImageTorch):
         kmeans = KMeans(n_clusters=K).fit(rnd_pts_ab)
 
         # sort by cluster occupancy
-        k_label_cnt = np.histogram(kmeans.labels_, np.arange(0, K+1))[0]
+        k_label_cnt = np.histogram(kmeans.labels_, np.arange(0, K + 1))[0]
         k_inds = np.argsort(k_label_cnt, axis=0)[::-1]
 
-        cluster_per = 1. * k_label_cnt[k_inds]/N  # percentage of points within cluster
+        cluster_per = 1. * k_label_cnt[k_inds] / N  # percentage of points within cluster
         cluster_centers = kmeans.cluster_centers_[k_inds, :]  # cluster centers
 
         # cluster_centers = np.random.uniform(low=-100,high=100,size=(N,2))
@@ -334,7 +352,7 @@ class ColorizeImageTorchDist(ColorizeImageTorch):
 
     def compute_entropy(self):
         # compute the distribution entropy (really slow right now)
-        self.dist_entropy = np.sum(self.dist_ab*np.log(self.dist_ab), axis=0)
+        self.dist_entropy = np.sum(self.dist_ab * np.log(self.dist_ab), axis=0)
 
     def plot_dist_grid(self, h, w):
         # Plots distribution at a given point
@@ -349,7 +367,6 @@ class ColorizeImageTorchDist(ColorizeImageTorch):
         plt.figure()
         plt.imshow(-self.dist_entropy, interpolation='nearest')
         plt.colorbar()
-
 
 
 class ColorizeImageCaffe(ColorizeImageBase):
