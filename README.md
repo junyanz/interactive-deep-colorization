@@ -1,7 +1,7 @@
 
 # Interactive Deep Colorization
 
-[[Project Page]](https://richzhang.github.io/ideepcolor/) [[Paper]](https://arxiv.org/abs/1705.02999) [[Demo Video]](https://youtu.be/eL5ilZgM89Q) [[SIGGRAPH Talk]](https://www.youtube.com/watch?v=rp5LUSbdsys)
+[Project Page](https://richzhang.github.io/ideepcolor/) | [Paper](https://arxiv.org/abs/1705.02999) | [Demo Video](https://youtu.be/eL5ilZgM89Q) | [SIGGRAPH Talk](https://www.youtube.com/watch?v=rp5LUSbdsys)
 <img src='imgs/demo.gif' width=600>  
 
 <b>9/3/2018 Update</b> The code now supports a backend PyTorch model (with PyTorch 0.5.0+). Please find the Local Hints Network training code in the [colorization-pytorch](https://github.com/richzhang/colorization-pytorch) repository.
