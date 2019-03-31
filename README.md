@@ -114,7 +114,7 @@ conda install pyqt=4.11 ## qt4
 conda install -c auto qdarkstyle  ## qdarkstyle
 ```
 
-- **Docker**: [[OSX Docker file](https://hub.docker.com/r/vbisbest/ideepcolor_osx/)] and [[OSX Installation video](https://www.youtube.com/watch?v=IORcb4lQlxQ)] by @vbisbest,  [[Docker file 2](https://hub.docker.com/r/swallner/ideepcolor/)] (by @sabrinawallner) based on [DL Docker]((https://github.com/floydhub/dl-docker).
+- **Docker**: [[OSX Docker file](https://hub.docker.com/r/vbisbest/ideepcolor_osx/)] and [[OSX Installation video](https://www.youtube.com/watch?v=IORcb4lQlxQ)] by @vbisbest,  [[Docker file 2](https://hub.docker.com/r/swallner/ideepcolor/)] (by @sabrinawallner) based on [DL Docker](https://github.com/floydhub/dl-docker).
 
 - More installation [help](https://github.com/junyanz/interactive-deep-colorization/issues/10) (by @SleepProgger).
 
