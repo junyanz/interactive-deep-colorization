@@ -50,12 +50,12 @@ If you need to convert the Notebook to an older version, use `jupyter nbconvert 
 
 - Install [Qt4](https://wiki.python.org/moin/PyQt4) and [QDarkStyle](https://github.com/ColinDuquesnoy/QDarkStyleSheet). (See [Installation](https://github.com/junyanz/interactive-deep-colorization#installation))
 
-- Run the UI: `python ideepcolor.py --gpu [GPU_ID]`. Arguments are described below:
+- Run the UI: `python ideepcolor.py --gpu [GPU_ID] --backend [CAFFE OR PYTORCH]`. Arguments are described below:
 ```
 --win_size    [512] GUI window size
 --gpu         [0] GPU number
 --image_file  ['./test_imgs/mortar_pestle.jpg'] path to the image file
---backend     ['caffe'] either use 'caffe' or 'pytorch'; 'caffe' is the official model from siggraph 2017, and 'pytorch' is a reimplementation
+--backend     ['caffe'] either use 'caffe' or 'pytorch'; 'caffe' is the official model from siggraph 2017, and 'pytorch' is the same weights converted
 ```
 
 - User interactions
