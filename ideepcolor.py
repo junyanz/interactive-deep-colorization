@@ -32,11 +32,12 @@ def parse_args():
 
     # PyTorch (same model used for both)
     parser.add_argument('--color_model', dest='color_model', help='colorization model', type=str,
-                        default='./models/pytorch/model.pth')
+                        default='./models/pytorch/caffemodel.pth')
     parser.add_argument('--dist_model', dest='color_model', help='colorization distribution prediction model', type=str,
-                        default='./models/pytorch/model.pth')
+                        default='./models/pytorch/caffemodel.pth')
 
     parser.add_argument('--backend', dest='backend', type=str, help='caffe or pytorch', default='caffe')
+    parser.add_argument('--pytorch_maskcent', dest='pytorch_maskcent', help='need to center mask (activate for siggraph_pretrained but not for converted caffemodel)', action='store_true')
 
     # ***** DEPRECATED *****
     parser.add_argument('--load_size', dest='load_size', help='image size', type=int, default=256)
@@ -64,10 +65,10 @@ if __name__ == '__main__':
         distModel = CI.ColorizeImageCaffeDist(Xd=args.load_size)
         distModel.prep_net(args.gpu, args.dist_prototxt, args.dist_caffemodel)
     elif args.backend == 'pytorch':
-        colorModel = CI.ColorizeImageTorch(Xd=args.load_size)
+        colorModel = CI.ColorizeImageTorch(Xd=args.load_size,maskcent=args.pytorch_maskcent)
         colorModel.prep_net(path=args.color_model)
 
-        distModel = CI.ColorizeImageTorchDist(Xd=args.load_size)
+        distModel = CI.ColorizeImageTorchDist(Xd=args.load_size,maskcent=args.pytorch_maskcent)
         distModel.prep_net(path=args.color_model, dist=True)
     else:
         print('backend type [%s] not found!' % args.backend)

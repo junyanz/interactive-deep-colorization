@@ -199,7 +199,7 @@ class ColorizeImageBase():
 
 
 class ColorizeImageTorch(ColorizeImageBase):
-    def __init__(self, Xd=256):
+    def __init__(self, Xd=256, maskcent=False):
         print('ColorizeImageTorch instantiated')
         ColorizeImageBase.__init__(self, Xd)
         self.l_norm = 1.
@@ -207,6 +207,7 @@ class ColorizeImageTorch(ColorizeImageBase):
         self.l_mean = 50.
         self.ab_mean = 0.
         self.mask_mult = 1.
+        self.mask_cent = .5 if maskcent else 0
 
         # Load grid properties
         self.pts_in_hull = np.array(np.meshgrid(np.arange(-110, 120, 10), np.arange(-110, 120, 10))).reshape((2, 529)).T
@@ -226,7 +227,7 @@ class ColorizeImageTorch(ColorizeImageBase):
         for key in list(state_dict.keys()):  # need to copy keys here because we mutate in loop
             self.__patch_instance_norm_state_dict(state_dict, self.net, key.split('.'))
         self.net.load_state_dict(state_dict)
-        if gpu_id != -1:
+        if gpu_id != None:
             self.net.cuda()
         self.net.eval()
         self.net_set = True
@@ -259,7 +260,7 @@ class ColorizeImageTorch(ColorizeImageBase):
         # return prediction
         # self.net.blobs['data_l_ab_mask'].data[...] = net_input_prepped
         # embed()
-        output_ab = self.net.forward(self.img_l_mc, self.input_ab_mc, self.input_mask_mult)[0, :, :, :].cpu().data.numpy()
+        output_ab = self.net.forward(self.img_l_mc, self.input_ab_mc, self.input_mask_mult, self.mask_cent)[0, :, :, :].cpu().data.numpy()
         self.output_rgb = lab2rgb_transpose(self.img_l, output_ab)
         # self.output_rgb = lab2rgb_transpose(self.img_l, self.net.blobs[self.pred_ab_layer].data[0, :, :, :])
 
@@ -276,7 +277,7 @@ class ColorizeImageTorch(ColorizeImageBase):
 
 
 class ColorizeImageTorchDist(ColorizeImageTorch):
-    def __init__(self, Xd=256):
+    def __init__(self, Xd=256, maskcent=False):
         ColorizeImageTorch.__init__(self, Xd)
         self.dist_ab_set = False
         self.pts_grid = np.array(np.meshgrid(np.arange(-110, 120, 10), np.arange(-110, 120, 10))).reshape((2, 529)).T
@@ -287,6 +288,7 @@ class ColorizeImageTorchDist(ColorizeImageTorch):
         self.dist_ab_full = np.zeros((self.AB, self.Xd, self.Xd))
         self.dist_ab_grid = np.zeros((self.A, self.B, self.Xd, self.Xd))
         self.dist_entropy = np.zeros((self.Xd, self.Xd))
+        self.mask_cent = .5 if maskcent else 0
 
     def prep_net(self, gpu_id=None, path='', dist=True, S=.2):
         ColorizeImageTorch.prep_net(self, gpu_id=gpu_id, path=path, dist=dist)
@@ -303,7 +305,7 @@ class ColorizeImageTorchDist(ColorizeImageTorch):
             return -1
 
         # set distribution
-        (function_return, self.dist_ab) = self.net.forward(self.img_l_mc, self.input_ab_mc, self.input_mask_mult)
+        (function_return, self.dist_ab) = self.net.forward(self.img_l_mc, self.input_ab_mc, self.input_mask_mult, self.mask_cent)
         function_return = function_return[0, :, :, :].cpu().data.numpy()
         self.dist_ab = self.dist_ab[0, :, :, :].cpu().data.numpy()
         self.dist_ab_set = True

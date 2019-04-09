@@ -131,16 +131,21 @@ class SIGGRAPHGenerator(nn.Module):
         self.upsample4 = nn.Sequential(*[nn.Upsample(scale_factor=4, mode='nearest'), ])
         self.softmax = nn.Sequential(*[nn.Softmax(dim=1), ])
 
-    def forward(self, input_A, input_B, mask_B):
+    def forward(self, input_A, input_B, mask_B, maskcent=0):
         # input_A \in [-50,+50]
         # input_B \in [-110, +110]
-        # mask_B \in [0, +0.5]
+        # mask_B \in [0, +1.0]
 
-        input_A = torch.Tensor(input_A).cuda()[None, :, :, :]
-        input_B = torch.Tensor(input_B).cuda()[None, :, :, :]
-        mask_B = torch.Tensor(mask_B).cuda()[None, :, :, :]
+        input_A = torch.Tensor(input_A)[None, :, :, :]
+        input_B = torch.Tensor(input_B)[None, :, :, :]
+        mask_B = torch.Tensor(mask_B)[None, :, :, :]
+        mask_B = mask_B - maskcent
+        
+        # input_A = torch.Tensor(input_A).cuda()[None, :, :, :]
+        # input_B = torch.Tensor(input_B).cuda()[None, :, :, :]
+        # mask_B = torch.Tensor(mask_B).cuda()[None, :, :, :]
 
-        conv1_2 = self.model1(torch.cat((input_A / 100., input_B / 110., mask_B - .5), dim=1))
+        conv1_2 = self.model1(torch.cat((input_A / 100., input_B / 110., mask_B), dim=1))
         conv2_2 = self.model2(conv1_2[:, :, ::2, ::2])
         conv3_3 = self.model3(conv2_2[:, :, ::2, ::2])
         conv4_3 = self.model4(conv3_3[:, :, ::2, ::2])
