@@ -5,6 +5,8 @@
 <img src='imgs/demo.gif' width=600>  
 
 <b>8/Apr/2020 Fork</b> This a windows installation guide for the PyTorch model in Python 3.6. Original code is from [colorization-pytorch](https://github.com/junyanz/interactive-deep-colorization) repository.
+<b>10/3/2019 Update</b> Our technology is also now available in Adobe Photoshop Elements 2020. See this [blog](https://helpx.adobe.com/photoshop-elements/using/colorize-photo.html) and [video](https://www.youtube.com/watch?v=tmXg4N4YlJg) for more details. 
+<b>9/3/2018 Update</b> The code now supports a backend PyTorch model (with PyTorch 0.5.0+). Please find the Local Hints Network training code in the [colorization-pytorch](https://github.com/richzhang/colorization-pytorch) repository.
 
 Real-Time User-Guided Image Colorization with Learned Deep Priors.  
 [Richard Zhang](https://richzhang.github.io/)\*, [Jun-Yan Zhu](http://people.csail.mit.edu/junyanz/)\*, [Phillip Isola](http://people.eecs.berkeley.edu/~isola/), [Xinyang Geng](http://young-geng.xyz/), Angela S. Lin, Tianhe Yu, and [Alexei A. Efros](https://people.eecs.berkeley.edu/~efros/).  
