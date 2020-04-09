@@ -4,7 +4,7 @@
 [Project Page](https://richzhang.github.io/ideepcolor/) | [Paper](https://arxiv.org/abs/1705.02999) | [Demo Video](https://youtu.be/eL5ilZgM89Q) | [SIGGRAPH Talk](https://www.youtube.com/watch?v=rp5LUSbdsys)
 <img src='imgs/demo.gif' width=600>  
 
-<b>9/3/2018 Update</b> The code now supports a backend PyTorch model (with PyTorch 0.5.0+). Please find the Local Hints Network training code in the [colorization-pytorch](https://github.com/richzhang/colorization-pytorch) repository.
+<b>8/Apr/2020 Fork</b> This a windows installation guide for the PyTorch model in Python 3.6. Original code is from [colorization-pytorch](https://github.com/junyanz/interactive-deep-colorization) repository.
 
 Real-Time User-Guided Image Colorization with Learned Deep Priors.  
 [Richard Zhang](https://richzhang.github.io/)\*, [Jun-Yan Zhu](http://people.csail.mit.edu/junyanz/)\*, [Phillip Isola](http://people.eecs.berkeley.edu/~isola/), [Xinyang Geng](http://young-geng.xyz/), Angela S. Lin, Tianhe Yu, and [Alexei A. Efros](https://people.eecs.berkeley.edu/~efros/).  
@@ -17,8 +17,8 @@ We first describe the system <b>(0) Prerequisities</b> and steps for <b>(1) Gett
 <img src='https://richzhang.github.io/ideepcolor/index_files/imagenet_showcase_small.jpg' width=800>
 
 ### (0) Prerequisites
-- Linux or OSX
-- [Caffe](http://caffe.berkeleyvision.org/installation.html) or PyTorch
+- Windows
+- PyTorch
 - CPU or NVIDIA GPU + CUDA CuDNN.
 
 ### (1) Getting Started
@@ -28,12 +28,16 @@ git clone https://github.com/junyanz/interactive-deep-colorization ideepcolor
 cd ideepcolor
 ```
 
-- Download the reference model
-```
-bash ./models/fetch_models.sh
-```
+- Download the reference model into the ./models/pytorch folder
+Equivalent of the original torch model: http://colorization.eecs.berkeley.edu/siggraph/models/caffemodel.pth
+Retrained version in Pytorch: http://colorization.eecs.berkeley.edu/siggraph/models/pytorch.pth
 
-- Install [Caffe](http://caffe.berkeleyvision.org/installation.html) or [PyTorch]() and 3rd party Python libraries ([OpenCV](http://opencv.org/), [scikit-learn](http://scikit-learn.org/stable/install.html) and [scikit-image](https://github.com/scikit-image/scikit-image)). See the [Requirements](#Requirements) for more details.
+
+Install the following 
+- PyTorch: pip install pytorch torchvision
+- OpenCV: pip install opencv-python
+- scikit-learn & scikit-image: pip install scikit-learn scikit-image
+See the [Requirements](#Requirements) for more details.
 
 ### (2) Interactive Colorization (Local Hints Network)
 <img src='imgs/teaser_v3.jpg' width=800>
@@ -48,7 +52,7 @@ If you need to convert the Notebook to an older version, use `jupyter nbconvert 
 
 #### (2b) Full Demo GUI
 
-- Install [Qt4](https://wiki.python.org/moin/PyQt4) and [QDarkStyle](https://github.com/ColinDuquesnoy/QDarkStyleSheet). (See [Installation](https://github.com/junyanz/interactive-deep-colorization#installation))
+- Install [Python Windows Binary packages - PyQt](https://www.lfd.uci.edu/~gohlke/pythonlibs/#pyqt4) and [QDarkStyle](https://github.com/ColinDuquesnoy/QDarkStyleSheet). (See [Installation](https://github.com/junyanz/interactive-deep-colorization#installation))
 
 - Run the UI: `python ideepcolor.py --gpu [GPU_ID] --backend [CAFFE OR PYTORCH]`. Arguments are described below:
 ```
@@ -97,11 +101,11 @@ We include an example usage of our Global Hints Network, applied to global histo
 - Install scikit-image, scikit-learn, opencv, Qt4, and QDarkStyle pacakges:
 ```bash
 # ./install/install_deps.sh
-sudo pip install scikit-image
-sudo pip install scikit-learn
-sudo apt-get install python-opencv
-sudo apt-get install python-qt4
-sudo pip install qdarkstyle
+pip install scikit-image
+pip install scikit-learn
+pip install opencv-python
+pip install {put_pyqt4 wheel file here} ##qt4
+pip install qdarkstyle
 ```
 For Conda users, type the following command lines (this may work for full Anaconda but not Miniconda):
 ```bash
@@ -110,7 +114,7 @@ conda install -c anaconda protobuf  ## photobuf
 conda install -c anaconda scikit-learn=0.19.1 ## scikit-learn
 conda install -c anaconda scikit-image=0.13.0  ## scikit-image
 conda install -c menpo opencv=2.4.11   ## opencv
-conda install pyqt=4.11 ## qt4
+conda install {put_pyqt4 wheel file here} ##qt4
 conda install -c auto qdarkstyle  ## qdarkstyle
 ```
 

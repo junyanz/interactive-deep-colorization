@@ -36,7 +36,7 @@ def parse_args():
     parser.add_argument('--dist_model', dest='color_model', help='colorization distribution prediction model', type=str,
                         default='./models/pytorch/caffemodel.pth')
 
-    parser.add_argument('--backend', dest='backend', type=str, help='caffe or pytorch', default='caffe')
+    parser.add_argument('--backend', dest='backend', type=str, help='caffe or pytorch', default='pytorch')
     parser.add_argument('--pytorch_maskcent', dest='pytorch_maskcent', help='need to center mask (activate for siggraph_pretrained but not for converted caffemodel)', action='store_true')
 
     # ***** DEPRECATED *****
