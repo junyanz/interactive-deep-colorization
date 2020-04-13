@@ -45,7 +45,7 @@ class GUIDraw(QWidget):
         self.update()
 
     def init_result(self, image_file):
-        self.read_image(image_file.encode('utf-8'))  # read an image
+        self.read_image(image_file)  # read an image
         self.reset()
 
     def get_batches(self, img_dir):
@@ -216,7 +216,7 @@ class GUIDraw(QWidget):
         self.eraseMode = not self.eraseMode
 
     def load_image(self):
-        img_path = unicode(QFileDialog.getOpenFileName(self, 'load an input image'))
+        img_path = QFileDialog.getOpenFileName(self, 'load an input image')
         self.init_result(img_path)
 
     def save_result(self):
