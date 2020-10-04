@@ -1,7 +1,7 @@
 
 # Interactive Deep Colorization
 
-[Project Page](https://richzhang.github.io/ideepcolor/) | [Paper](https://arxiv.org/abs/1705.02999) | [Demo Video](https://youtu.be/eL5ilZgM89Q) | [SIGGRAPH Talk](https://www.youtube.com/watch?v=rp5LUSbdsys)
+[Project Page](https://richzhang.github.io/InteractiveColorization) | [Paper](https://arxiv.org/abs/1705.02999) | [Demo Video](https://youtu.be/eL5ilZgM89Q) | [SIGGRAPH Talk](https://www.youtube.com/watch?v=rp5LUSbdsys)
 <img src='imgs/demo.gif' width=600>  
 
 
@@ -20,7 +20,7 @@ In ACM Transactions on Graphics (SIGGRAPH 2017).
 We first describe the system <b>(0) Prerequisities</b> and steps for <b>(1) Getting started</b>. We then describe the interactive colorization demo <b>(2) Interactive Colorization (Local Hints Network)</b>. There are two demos: (a) a "barebones" version in iPython notebook and (b) the full GUI we used in our paper. We then provide an example of the <b>(3) Global Hints Network</b>.
 
 
-<img src='https://richzhang.github.io/ideepcolor/index_files/imagenet_showcase_small.jpg' width=800>
+<img src='https://richzhang.github.io/InteractiveColorization/index_files/imagenet_showcase_small.jpg' width=800>
 
 ### (0) Prerequisites
 - Linux or OSX
@@ -79,7 +79,7 @@ If you need to convert the Notebook to an older version, use `jupyter nbconvert 
 - <b>Quit</b>: Click on the quit button.
 
 ### (3) Global Hints Network
-<img src='https://richzhang.github.io/ideepcolor/index_files/lab_all_figures45k_small.jpg' width=800>
+<img src='https://richzhang.github.io/InteractiveColorization/index_files/lab_all_figures45k_small.jpg' width=800>
 
 We include an example usage of our Global Hints Network, applied to global histogram transfer. We show its usage in an iPython notebook.
 
