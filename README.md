@@ -54,7 +54,7 @@ If you need to convert the Notebook to an older version, use `jupyter nbconvert 
 
 #### (2b) Full Demo GUI
 
-- Install [Qt4](https://wiki.python.org/moin/PyQt4) and [QDarkStyle](https://github.com/ColinDuquesnoy/QDarkStyleSheet). (See [Installation](https://github.com/junyanz/interactive-deep-colorization#installation))
+- Install [Qt5](https://doc.qt.io/qt-5/gettingstarted.html) and [QDarkStyle](https://github.com/ColinDuquesnoy/QDarkStyleSheet). (See [Installation](https://github.com/junyanz/interactive-deep-colorization#installation))
 
 - Run the UI: `python ideepcolor.py --gpu [GPU_ID] --backend [CAFFE OR PYTORCH]`. Arguments are described below:
 ```
@@ -100,13 +100,13 @@ We include an example usage of our Global Hints Network, applied to global histo
 
   - Install PyTorch: see the PyTorch [installation](https://pytorch.org/) guide.
 
-- Install scikit-image, scikit-learn, opencv, Qt4, and QDarkStyle pacakges:
+- Install scikit-image, scikit-learn, opencv, Qt5, and QDarkStyle pacakges:
 ```bash
 # ./install/install_deps.sh
 sudo pip install scikit-image
 sudo pip install scikit-learn
 sudo apt-get install python-opencv
-sudo apt-get install python-qt4
+sudo apt-get install qt5-default
 sudo pip install qdarkstyle
 ```
 For Conda users, type the following command lines (this may work for full Anaconda but not Miniconda):
@@ -116,9 +116,11 @@ conda install -c anaconda protobuf  ## photobuf
 conda install -c anaconda scikit-learn=0.19.1 ## scikit-learn
 conda install -c anaconda scikit-image=0.13.0  ## scikit-image
 conda install -c menpo opencv=2.4.11   ## opencv
-conda install pyqt=4.11 ## qt4
+conda install -c anaconda qt ## qt5
 conda install -c auto qdarkstyle  ## qdarkstyle
 ```
+
+For Docker users, please follow the Docker [document](https://github.com/junyanz/interactive-deep-colorization/tree/master/docker). 
 
 - **Docker**: [[OSX Docker file](https://hub.docker.com/r/vbisbest/ideepcolor_osx/)] and [[OSX Installation video](https://www.youtube.com/watch?v=IORcb4lQlxQ)] by @vbisbest,  [[Docker file 2](https://hub.docker.com/r/swallner/ideepcolor/)] (by @sabrinawallner) based on [DL Docker](https://github.com/floydhub/dl-docker).
 
