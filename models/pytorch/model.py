@@ -130,21 +130,24 @@ class SIGGRAPHGenerator(nn.Module):
 
         self.upsample4 = nn.Sequential(*[nn.Upsample(scale_factor=4, mode='nearest'), ])
         self.softmax = nn.Sequential(*[nn.Softmax(dim=1), ])
+        self.cuda0 = torch.device('cuda:0')
+
 
     def forward(self, input_A, input_B, mask_B, maskcent=0):
         # input_A \in [-50,+50]
         # input_B \in [-110, +110]
         # mask_B \in [0, +1.0]
 
-        input_A = torch.Tensor(input_A)[None, :, :, :]
-        input_B = torch.Tensor(input_B)[None, :, :, :]
-        mask_B = torch.Tensor(mask_B)[None, :, :, :]
+        input_A = input_A[None, :, :, :]
+        input_B = input_B[None, :, :, :]
+        mask_B = mask_B[None, :, :, :]
         mask_B = mask_B - maskcent
         
-        # input_A = torch.Tensor(input_A).cuda()[None, :, :, :]
-        # input_B = torch.Tensor(input_B).cuda()[None, :, :, :]
-        # mask_B = torch.Tensor(mask_B).cuda()[None, :, :, :]
-
+        #input_A = torch.Tensor(input_A, dtype=torch.float32).to(self.cuda0)[None, :, :, :]
+        input_A = torch.Tensor(input_A)
+        input_A = input_A.to(self.cuda0)
+        #input_B = torch.Tensor(input_B,dtype=torch.float32).to(self.cuda0)[None, :, :, :]
+        #mask_B = torch.Tensor(mask_B,dtype=torch.float32).to(self.cuda0)[None, :, :, :]
         conv1_2 = self.model1(torch.cat((input_A / 100., input_B / 110., mask_B), dim=1))
         conv2_2 = self.model2(conv1_2[:, :, ::2, ::2])
         conv3_3 = self.model3(conv2_2[:, :, ::2, ::2])
