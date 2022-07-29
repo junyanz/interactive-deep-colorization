@@ -5,7 +5,10 @@ from skimage import color
 from sklearn.cluster import KMeans
 import os
 from scipy.ndimage.interpolation import zoom
-
+import sys
+from os.path import dirname
+from pathlib import Path
+import torch
 
 def create_temp_directory(path_template, N=1e8):
     print(path_template)
@@ -69,9 +72,12 @@ class ColorizeImageBase():
         self.img_rgb_fullres = input_image.copy()
         self._set_img_lab_fullres_()
 
+
+        im = cv2.resize(input_image, (self.Xd, self.Xd))
+
         self.img_l_set = True
 
-        self.img_rgb = input_image
+        self.img_rgb = im
         # convert into lab space
         self._set_img_lab_()
         self._set_img_lab_mc_()
@@ -126,13 +132,13 @@ class ColorizeImageBase():
         # have been called.
         # bilinear upsample
         zoom_factor = (1, 1. * self.img_l_fullres.shape[1] / self.output_ab.shape[1], 1. * self.img_l_fullres.shape[2] / self.output_ab.shape[2])
-        output_ab_fullres = zoom(self.output_ab, zoom_factor, order=1)
+        output_ab_fullres = zoom(np.array(self.output_ab.tolist()), zoom_factor, order=1)
 
         return lab2rgb_transpose(self.img_l_fullres, output_ab_fullres)
 
     def get_input_img_fullres(self):
         zoom_factor = (1, 1. * self.img_l_fullres.shape[1] / self.input_ab.shape[1], 1. * self.img_l_fullres.shape[2] / self.input_ab.shape[2])
-        input_ab_fullres = zoom(self.input_ab, zoom_factor, order=1)
+        input_ab_fullres = zoom(np.array(self.input_ab.tolist()), zoom_factor, order=1)
         return lab2rgb_transpose(self.img_l_fullres, input_ab_fullres)
 
     def get_input_img(self):
@@ -145,7 +151,7 @@ class ColorizeImageBase():
     def get_img_mask_fullres(self):
         # Get black and white image
         zoom_factor = (1, 1. * self.img_l_fullres.shape[1] / self.input_ab.shape[1], 1. * self.img_l_fullres.shape[2] / self.input_ab.shape[2])
-        input_mask_fullres = zoom(self.input_mask, zoom_factor, order=0)
+        input_mask_fullres = zoom(np.array(self.input_mask.tolist()), zoom_factor, order=0)
         return lab2rgb_transpose(100. * (1 - input_mask_fullres), np.zeros((2, input_mask_fullres.shape[1], input_mask_fullres.shape[2])))
 
     def get_sup_img(self):
@@ -213,12 +219,15 @@ class ColorizeImageTorch(ColorizeImageBase):
         self.pts_in_hull = np.array(np.meshgrid(np.arange(-110, 120, 10), np.arange(-110, 120, 10))).reshape((2, 529)).T
 
     # ***** Net preparation *****
-    def prep_net(self, gpu_id=None, path='', dist=False):
-        import torch
-        import models.pytorch.model as model
+    def prep_net(self, gpu_id=None, path='', dist=False, SIGGRAPHGenerator=None):
+
+        # This errors out when its imported
+        #import models.pytorch.model as model
         print('path = %s' % path)
         print('Model set! dist mode? ', dist)
-        self.net = model.SIGGRAPHGenerator(dist=dist)
+        if SIGGRAPHGenerator is None:
+            raise "No model was specified"
+        self.net = SIGGRAPHGenerator(dist=dist)
         state_dict = torch.load(path)
         if hasattr(state_dict, '_metadata'):
             del state_dict._metadata
